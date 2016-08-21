@@ -71,9 +71,7 @@ public class WServer implements Runnable{
                 throw new RuntimeException(
                     "Error accepting client connection", e);
             }
-            
-            
-            
+
             System.out.printf("Got the %d machine", ind);
             //create a new robot
             //wait until all robot is connected
@@ -83,14 +81,9 @@ public class WServer implements Runnable{
             System.out.printf("The size of this task is %d\n",r.task.size());
             rlist.add(r);
             if (ind+1<robotnumber){ind++;continue;}
-            
-            
-            
-            
+
             try{
-                
-                
-                
+    
             //refresh robot starting position
             for (ROT rr:rlist){
             try {
@@ -103,13 +96,7 @@ public class WServer implements Runnable{
             } catch (Exception ex) {
             }
             }
-            
-            
-            
-            
-            
-            
-            
+
             Amap.sstime=0;
             
             
@@ -154,10 +141,8 @@ public class WServer implements Runnable{
             System.out.println(ttr);
             synchronized (this){
             System.out.println("algorithm reset");
-            for (ROT rr:rlist)rr.running=false;
-            
-            
             Route.refresh();
+            for (ROT rr:rlist)rr.running=false;
             if (ttr==0){break;}
             }
             

@@ -33,13 +33,15 @@ public class Algorithm{
 		this.fpMap=Amap.fpMap;
 		this.fbMap=Amap.fbMap;
 		this.ffMap=Amap.ffMap;
+                this.mfbMap=b.mfbMap;
+                this.mfdMap=b.mfdMap;
 		bot=b;
 		for (int tt=t;tt<t+1;tt++){		
 			fbMap[tt][i][j]=b.ID;
 			//bot.coor[tt].first=i; bot.coor[tt].second=j;
                         
-                        tile[tt][i][j]=new Tile();
-                        tile[tt][i][j].nd=b.direction;
+                        //tile[tt][i][j]=new Tile();
+                        //tile[tt][i][j].nd=b.direction;
                                                 
 			setMark(tt,i,j,true);
 			bot.order[tt]=1;
@@ -56,14 +58,16 @@ public class Algorithm{
 		this.fpMap=Amap.fpMap;
 		this.fbMap=Amap.fbMap;
 		this.ffMap=Amap.ffMap;
+                this.mfbMap=b.mfbMap;
+                this.mfdMap=b.mfdMap;
 		bot=b;
 		bot.state=1-bot.state;
 		for (int tt=t;tt<t+1;tt++){		
 			fbMap[tt][i][j]=b.ID;
 			//bot.coor[tt].first=i; bot.coor[tt].second=j;
                         
-                        tile[tt][i][j]=new Tile();
-                        tile[tt][i][j].nd=b.direction;
+                        //tile[tt][i][j]=new Tile();
+                        //tile[tt][i][j].nd=b.direction;
                         
 			setMark(tt,i,j,true);
 			bot.order[tt]=2;
@@ -79,14 +83,16 @@ public class Algorithm{
 		this.fpMap=Amap.fpMap;
 		this.fbMap=Amap.fbMap;
 		this.ffMap=Amap.ffMap;
+                this.mfbMap=b.mfbMap;
+                this.mfdMap=b.mfdMap;
 		bot=b;
 		bot.state=1-bot.state;
 		for (int tt=t;tt<t+1;tt++){		
 			fbMap[tt][i][j]=b.ID;
 			//bot.coor[tt].first=i; bot.coor[tt].second=j;
                         
-                        tile[tt][i][j]=new Tile();
-                        tile[tt][i][j].nd=b.direction;
+                        //tile[tt][i][j]=new Tile();
+                        //tile[tt][i][j].nd=b.direction;
 			setMark(tt,i,j,true);
 			bot.order[tt]=3;
 		}
@@ -508,12 +514,12 @@ public class Algorithm{
         
         
         //if (false) 
-        for (int i=stt;i<t+1;i++){
+        //for (int i=stt;i<t+1;i++){
                 //System.out.println(bot.dir[i]);
 		//printAMap(i);
-		printFDMap(i);
+		//printFDMap(i);
 		//ownMap.printMap(i);
-	}
+	//}
         //System.out.printf("The current time is %d\n",bot.ID);
         
          recMap2(stt,t,dsx,dsy);
@@ -637,7 +643,7 @@ public void recMap2(int sst,int t, int dex,int dey){
         else {bot.dir[ttt]=bot.dir[ttt+1];}
         
     }
-    System.out.printf("\nWe are currently at %d  %d  %d  and the direction is %d\n", ttt,bot.CoX[ttt],bot.CoY[ttt],bot.dir[ttt]);
+    //System.out.printf("\nWe are currently at %d  %d  %d  and the direction is %d\n", ttt,bot.CoX[ttt],bot.CoY[ttt],bot.dir[ttt]);
     
     setMark(ttt,bot.CoX[ttt],bot.CoY[ttt],true);
     if (ttt<tt){
@@ -686,7 +692,7 @@ public void recMap2(int sst,int t, int dex,int dey){
                 if (drawpod){
 		bot.order[t]=1;
 		mfbMap[t][i][j]=1;
-		if ((bot.state==1)&&(bot.podhold>0)&&(drawpod)){
+		if ((bot.state==1)&&(bot.podhold>0)){
 			fpMap[t][i][j]=bot.podhold;
 		}}
 

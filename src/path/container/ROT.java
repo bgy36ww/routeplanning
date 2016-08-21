@@ -8,6 +8,8 @@ public class ROT{
 	public int locationX;
 	public int locationY;
         
+        public int turns=99;
+        
         public int rx;
         public int ry;
         public int rd;

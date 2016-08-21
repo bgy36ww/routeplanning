@@ -54,9 +54,7 @@ public class WBot implements Runnable{
                 //if (startflag)
                 //Route.refresh();
                 synchronized (this){
-                if ((bot.task.element().desx==bot.locationX)&&(bot.task.element().desy==bot.locationY)&&(bot.task.element().order!=1)){
-                bot.task.element().order=1;
-                }
+                
                     
                     
                 
@@ -64,7 +62,7 @@ public class WBot implements Runnable{
                 mdesy=bot.desy;
                 mdesd=bot.desd;
                 startflag=true;
-                //System.out.printf("the destination is %d and %d %d\n", mdesx*1000,mdesy*1000,mdesd);
+                System.out.printf("the destination for %d is %d and %d %d\n",bot.ID, mdesx,mdesy,mdesd);
                 bot.mission=ConCom.toSommand(ind,bot.ID ,1 ,bot.order[0], mdesx,mdesy ,bot.toAngle(mdesd));
                 //bot.mission=ConCom.toSommand(ind,bot.ID ,1 ,bot.order[Amap.sstime], bot.CoX[Amap.sstime],bot.CoY[Amap.sstime] ,bot.toAngle(bot.dir[Amap.sstime]));
                 ind++;
@@ -84,21 +82,17 @@ public class WBot implements Runnable{
                 
                 
                 synchronized (this){
-                
-                if ((bot.task.element().desx==bot.locationX)&&(bot.task.element().desy==bot.locationY)){
-                    if(bot.task.element().order==1){
-                    System.out.printf("\nYo the Task I just completed is to move to %d and %d\n", bot.desx,bot.desy);
-                    System.out.println("Task completed");
-                
-                    bot.task.remove();}
-                    else{
-                        System.out.println("going to stall");
-                
+                    System.out.printf("\nthe turns left for %d is %d\n",bot.ID,bot.turns);
+                    System.out.printf("\ntasks left for %d is %d\n",bot.ID,bot.task.size());
+                    System.out.printf("\nI amd %d ing\n",bot.task.element().order); 
+                    System.out.printf("\nThe tasks is going to %d %d \n ",bot.task.element().desx,bot.task.element().desy); 
+                    //System.exit(0);
+                    if (bot.turns==0){
+                    bot.task.remove();
                     }
-                    
-                    
                 
-                }}
+                }
+                
                 
                 bot.running=true;
                 while((bot.running)&&(!bot.task.isEmpty())){Thread.sleep(10);}
