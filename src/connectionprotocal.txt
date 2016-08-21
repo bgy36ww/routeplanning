@@ -1,0 +1,45 @@
+Order:
+7
+000	01	:Mission
+001	02	:Askforstats
+002	03	:Reset
+003	04	:Reset
+004	05	:ReadWarning
+005	06	:Pause
+006	07	:Resume
+Command:
+6
+000	01	:Move
+001	02	:Turnnhold
+002	03	:Turnhold
+003	04	:Raise
+004	05	:Lower
+005	06	:TopReset
+Return:
+7
+000	01	:MissCom
+001	02	:Stats
+002	03	:ResetCom
+003	04	:ResetCom
+005	06	:PauseCom
+006	07	:ResumeCom
+004	05	:ErrorCom
+Errors:
+16
+000	01	:lostCooridinate
+001	02	:lowerVoltage
+002	03	:leftMotorError
+003	04	:leftMotorSpeedError
+004	05	:rightMotorError
+005	06	:rightMotorSpeedError
+006	07	:TurnMotorError
+007	08	:TurnSpeedError
+008	09	:LiftingMotorError
+009	10	:LiftingSpeedError
+010	11	:NotInPosition
+011	12	:DivergeError
+012	13	:GyroscopeError
+013	14	:GyroscopeSetError
+014	15	:GyroscopeCommunicationError
+015	16	:SpeedVoltageControlCommunicationError
+

@@ -1,0 +1,14 @@
+#number of robot
+3
+#location x y, direction, and starting state
+0 0 2 0
+5 0 2 0
+8 0 2 0
+#number of target POD
+3
+#location of target POD
+2 4
+4 4
+4 3
+#location of pickup spot
+5 18
