@@ -53,6 +53,7 @@ public class Route{
                     //break;
                 }
                 
+                
                 for (int ttt=btime;ttt<1000;ttt++)
                 al.setRest(ttt, rr.tx, rr.ty);
                 
@@ -60,6 +61,12 @@ public class Route{
                 rr.desx=rr.CoX[1];
                 rr.desy=rr.CoY[1];
                 rr.desd=rr.dir[1];
+                
+                if ( btime==0){
+                rr.desx=rr.CoX[0];
+                rr.desy=rr.CoY[0];
+                rr.desd=rr.dir[0];
+                }
                 
                 
                 //rr.mission=ConCom.toSommand(time, time, btime, btime, time, time, time)
