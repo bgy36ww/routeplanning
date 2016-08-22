@@ -43,7 +43,8 @@ public class WOut implements Runnable{
                   
                     dis.write(r.ry);
                     dis.write((r.rd+90)%360);
-                    dis.write(r.rem);
+                    dis.write(r.ostate+r.xx);
+                    r.xx=0;
                     dis.write(-799);
                 }
                 

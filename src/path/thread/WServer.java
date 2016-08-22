@@ -37,6 +37,20 @@ public class WServer implements Runnable{
     public boolean ready=false;
     public ArrayList<ROT> rlist=new ArrayList<>();
     
+    static public int alive=0;
+    static public int finishe=0;
+    
+    static public synchronized void tellive(){
+    alive++;
+    }
+    static public synchronized void teldead(){
+    alive--;
+    }
+    static public synchronized void finished(){
+    finishe++;
+    }
+    
+    
     public WServer(int port){
         this.serverPort = port;}
 
@@ -88,8 +102,8 @@ public class WServer implements Runnable{
             for (ROT rr:rlist){
             try {
                 rr.getpos();
-                rr.locationX=rr.rx/1000;
-                rr.locationY=rr.ry/1000;
+                rr.locationX=(rr.rx+100)/1000;
+                rr.locationY=(rr.ry+100)/1000;
                 rr.direction=(rr.rd+45)/90*90;
                 rr.direction=rr.toD(rr.direction);
                 System.out.printf("This robot is %d and its starting location is %d %d \n", rr.ID,rr.locationX,rr.locationY);
@@ -124,27 +138,25 @@ public class WServer implements Runnable{
             int tt=0;
             
             
-            while (tt<ttr){
-                ttr=0;
-                for (ROT rr:rlist){
-                if (!rr.task.isEmpty())ttr++;
+            while (finishe<alive){try {
+                Thread.sleep(10);
+                System.out.println("Sleeping");
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(WServer.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                try {
-                    tt=0;
-                    Thread.sleep(10);
-                    for (ROT rr:rlist){
-                        if ((rr.running)&&(!rr.task.isEmpty())) tt++;
-                    }   } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-            }
+}
+            
+           
             System.out.println(ttr);
-            synchronized (this){
+            
             System.out.println("algorithm reset");
             Route.refresh();
-            for (ROT rr:rlist)rr.running=false;
-            if (ttr==0){break;}
-            }
+            System.out.println("reset finished");
+            //for (ROT rr:rlist)rr.running=false;
+            
+             finishe=0;
+            if (alive==0){break;}
+            
             
             //break;
         }

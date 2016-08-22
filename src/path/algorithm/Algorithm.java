@@ -4,6 +4,7 @@ import static java.lang.Math.abs;
 import path.container.*;
 import java.util.*;
 import javax.swing.JOptionPane;
+import java.lang.NullPointerException;
 
 public class Algorithm{
 
@@ -25,10 +26,13 @@ public class Algorithm{
 	private int[] value;
 	private int startt;
 	private int ld;
-	
+	private int dssx;
+        private int dssy;
+        
 	private ROT bot;
 
-        public int stay(ROT b,int t,int i,int j){
+        public int stay(ROT b,int t,int i,int j)throws NullPointerException{
+                if (!checkRule(t+1,i,j)){throw new NullPointerException("Well, someone took this place already");}
                 this.fdMap=Amap.fdMap;
 		this.fpMap=Amap.fpMap;
 		this.fbMap=Amap.fbMap;
@@ -36,16 +40,9 @@ public class Algorithm{
                 this.mfbMap=b.mfbMap;
                 this.mfdMap=b.mfdMap;
 		bot=b;
-		for (int tt=t;tt<t+1;tt++){		
-			fbMap[tt][i][j]=b.ID;
-			//bot.coor[tt].first=i; bot.coor[tt].second=j;
-                        
-                        //tile[tt][i][j]=new Tile();
-                        //tile[tt][i][j].nd=b.direction;
-                                                
-			setMark(tt,i,j,true);
-			bot.order[tt]=1;
-		}
+                fbMap[t+1][i][j]=b.ID;
+                setMark(t+1,i,j,true);
+		bot.order[t]=1;
                 b.dir[t+1]=b.td;
                 b.CoX[t+1]=b.tx;
                 b.CoY[t+1]=b.ty;
@@ -53,32 +50,33 @@ public class Algorithm{
 		return t+1;
 	}
 
-	public int liftPOD(ROT b,int t,int i,int j){
+	public int liftPOD(ROT b,int t,int i,int j)throws NullPointerException{
+                if (!checkRule(t+1,i,j)){throw new NullPointerException("Well, someone took this place already");}
+                
                 this.fdMap=Amap.fdMap;
 		this.fpMap=Amap.fpMap;
 		this.fbMap=Amap.fbMap;
 		this.ffMap=Amap.ffMap;
                 this.mfbMap=b.mfbMap;
                 this.mfdMap=b.mfdMap;
-		bot=b;
-		bot.state=1-bot.state;
-		for (int tt=t;tt<t+1;tt++){		
-			fbMap[tt][i][j]=b.ID;
-			//bot.coor[tt].first=i; bot.coor[tt].second=j;
-                        
-                        //tile[tt][i][j]=new Tile();
-                        //tile[tt][i][j].nd=b.direction;
-                        
-			setMark(tt,i,j,true);
-			bot.order[tt]=2;
-		}
+		System.out.println(fpMap[t][i][j]);
+                
+                bot=b;
+		bot.state=1;
+                fbMap[t+1][i][j]=b.ID;
+                setMark(t+1,i,j,false);
+                mfbMap[t+1][i][j]=1;
+		
                 b.dir[t+1]=b.td;
                 b.CoX[t+1]=b.tx;
                 b.CoY[t+1]=b.ty;
-                clearRest(t,i,j);
+                clearRest(t+1,i,j);
+                bot.order[t]=2;
+                System.out.printf("\nSetting %d to 2\n", t+1);
 		return t+1;
 	}
-	public int dropPOD(ROT b,int t,int i,int j){
+	public int dropPOD(ROT b,int t,int i,int j)throws NullPointerException{
+                if (!checkRule(t+1,i,j)){throw new NullPointerException("Well, someone took this place already");}
                 this.fdMap=Amap.fdMap;
 		this.fpMap=Amap.fpMap;
 		this.fbMap=Amap.fbMap;
@@ -86,20 +84,16 @@ public class Algorithm{
                 this.mfbMap=b.mfbMap;
                 this.mfdMap=b.mfdMap;
 		bot=b;
-		bot.state=1-bot.state;
-		for (int tt=t;tt<t+1;tt++){		
-			fbMap[tt][i][j]=b.ID;
-			//bot.coor[tt].first=i; bot.coor[tt].second=j;
-                        
-                        //tile[tt][i][j]=new Tile();
-                        //tile[tt][i][j].nd=b.direction;
-			setMark(tt,i,j,true);
-			bot.order[tt]=3;
-		}
+		bot.state=0;
+                fbMap[t+1][i][j]=b.ID;
+                setMark(t+1,i,j,false);
+                mfbMap[t+1][i][j]=1;
+		
                 b.dir[t+1]=b.td;
                 b.CoX[t+1]=b.tx;
                 b.CoY[t+1]=b.ty;
 		placeRest(t+1,i,j);
+                bot.order[t]=3;
 		return t+1;
 	}
 
@@ -107,6 +101,7 @@ public class Algorithm{
 //down
 	private void clearRest(int t, int i, int j){
 		bot.podhold=fpMap[t][i][j];
+                System.out.println(fpMap[t][i][j]);
 		if (bot.podhold==0)  {System.out.println("Error no POD is here");System.exit(0);}
 		for (int tt=t;tt<bot.maxsize;tt++){
 			fpMap[tt][i][j]=0;
@@ -195,12 +190,12 @@ public class Algorithm{
 //
 	public void setRest(int t,int i,int j){
 		
-		for (int tt=t+1;tt<bot.maxsize;tt++){
-                        setRestMark(tt,i,j);
-                        fdMap[tt][i][j]=3;
-                        mfdMap[tt][i][j]=3;
-                        fbMap[tt][i][j]=bot.ID;
-                }
+		
+                        setRestMark(t,i,j);
+                        fdMap[t][i][j]=3;
+                        mfdMap[t][i][j]=3;
+                        fbMap[t][i][j]=bot.ID;
+                
 
 	}
 
@@ -345,6 +340,7 @@ public class Algorithm{
 		if (checkColision(t,i1,j1,i2,j2)) {		
 		if (checkRule(t+1,i2,j2)){
 			if(checkShort(t,tmp,i2,j2)){
+                            
 			aMap[t+1][i2][j2]=tmp;
                         //System.out.printf("Something is wrong here2 %d %d %d \n",t,i1,j1);
                         this.tile[t+1][i2][j2]=new Tile();
@@ -385,20 +381,22 @@ public class Algorithm{
             
 
             if ((t==3)&&(i==8)&&(j==7)){
-                System.out.printf("\nI am the wanted guy here my i and j are %d %d\n btw di and dj are %d %d \n",i+di,j+dj,di,dj);
-                System.out.println(checkRule(t+1,i+di,j+dj));
+               // System.out.printf("\nI am the wanted guy here my i and j are %d %d\n btw di and dj are %d %d \n",i+di,j+dj,di,dj);
+                //System.out.println(checkRule(t+1,i+di,j+dj));
                 }
             
             if (di+dj==0){return false;}
             while ((checkMap(t,i,j,i+di,j+dj,dd,0))&&(count<3)){
                 //System.out.printf("\ntruning%d %d\n",i+di,j+dj);
+                if ((i+di==dssx)&&(j+dj==dssy)){return true;}
+                
                 ret=true;
                 count++;
                 di=di+ddi;
                 dj=dj+ddj;
                 
                 if ((t==3)&&(i==8)&&(j==7)){
-                System.out.printf("\nI am the wanted guy here my i and j are %d %d\n btw di and dj are %d %d \n",i+di,j+dj,di,dj);
+                //System.out.printf("\nI am the wanted guy here my i and j are %d %d\n btw di and dj are %d %d \n",i+di,j+dj,di,dj);
                 }
             }
             return ret;
@@ -441,9 +439,20 @@ public class Algorithm{
         
         public void printFDMap(int t){
 		System.out.println(t);		
+                for (int i=0;i<Amap.ilength;++i){
+                        for (int j=0;j<Amap.jlength;++j){
+                                System.out.print(Amap.fpMap[t][i][j]);
+                                System.out.print("  ");
+                        }
+                        System.out.println();
+                }
+                System.out.println();
+        }
+        public void printFDMap2(int t){
+		System.out.println(t);		
                 for (int i=0;i<iLength;++i){
                         for (int j=0;j<jLength;++j){
-                                System.out.print(dMap[t][i][j]);
+                                System.out.print(ffMap[t][i][j]);
                                 System.out.print("  ");
                         }
                         System.out.println();
@@ -451,7 +460,7 @@ public class Algorithm{
                 System.out.println();
         }
 //clear
-	public synchronized int planRoute(ROT b,int stx, int sty, int std, int dsx, int dsy, int stt){
+	public synchronized int planRoute(ROT b,int stx, int sty, int std, int dsx, int dsy, int stt) throws NullPointerException{
 		this.bot=b;
 		this.traceMapx=Amap.cMap();
 		this.traceMapy=Amap.cMap();
@@ -467,6 +476,9 @@ public class Algorithm{
 		this.fpMap=Amap.fpMap;
 		this.fbMap=Amap.fbMap;
 		this.ffMap=Amap.ffMap;
+                
+                dssx=dsx;
+                dssy=dsy;
 		
 		startt=stt;
 		fdMap[stt][stx][sty]=std;
@@ -498,9 +510,9 @@ public class Algorithm{
 		for (int i=0;i<iLength;i++){
 			for (int j=0;j<jLength;j++){
 				if (aMap[t][i][j]!=0){
-                                    //turnROT(t,i,j);
+                                    turnROT(t,i,j);
                                         //System.out.printf("I make a turn in here %d %d %d", t,i,j);
-					if (!turnROT(t,i,j)){if (t==stt){System.out.println("This is bad");dMap[stt][stx][sty]=15; turnROT(t,i,j);bflag=true;}}
+					//if (!turnROT(t,i,j)){if (t==stt){System.out.println("This is bad");dMap[stt][stx][sty]=15; turnROT(t,i,j);bflag=true;}}
 				} 
 			}
 		}
@@ -513,13 +525,13 @@ public class Algorithm{
         
         
         
-        //if (false) 
-        //for (int i=stt;i<t+1;i++){
+        if (false) 
+        for (int i=stt;i<t+1;i++){
                 //System.out.println(bot.dir[i]);
 		//printAMap(i);
-		//printFDMap(i);
+		printFDMap2(i);
 		//ownMap.printMap(i);
-	//}
+	}
         //System.out.printf("The current time is %d\n",bot.ID);
         
          recMap2(stt,t,dsx,dsy);
@@ -595,7 +607,7 @@ public class Algorithm{
 		}
 	}
 */
-public void recMap2(int sst,int t, int dex,int dey){
+public void recMap2(int sst,int t, int dex,int dey) throws NullPointerException{
     int x=dex;
     int y=dey;
     
@@ -610,7 +622,7 @@ public void recMap2(int sst,int t, int dex,int dey){
         if (t-1<0) break;
         dex=x;
         dey=y;
-        try{
+        
         
             
         tx=tile[t][x][y].i;
@@ -630,10 +642,7 @@ public void recMap2(int sst,int t, int dex,int dey){
         tile[t-1][x][y].nd=detdir(x,y,dex,dey);
         t--; 
         
-        }catch(NullPointerException e){
-            e.printStackTrace();
-            System.exit(0);
-        }
+        
         
     }
     for (int ttt=sst;ttt<=tt;ttt++){
@@ -661,7 +670,8 @@ public void recMap2(int sst,int t, int dex,int dey){
             int i3=i2;
             int j3=j2;
             
-            
+            //setMark(t,i,j,false);
+            setMark(t,i2,j2,false);
             while (j2>j){
             setMark(t,i2,j2,false);
             j2--;

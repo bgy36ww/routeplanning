@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Amap{
         static public int overtime=0;
-	static public int maxsize=2500;
-	static public int currtime=2500;
+	static public int maxsize=1000;
+	static public int currtime=1000;
 	static public int[][] iMap;
         static public int[][] tpMap;
 	static public int[][][] fdMap;
@@ -45,7 +45,7 @@ public class Amap{
             fpMap=new int[maxsize][ilength][jlength];
             fbMap=new int[maxsize][ilength][jlength];
             ffMap=new int[maxsize][ilength][jlength];
-            tpMap=new int[ilength][jlength];
+            
         
             for (int t=0;t<currtime;t++){
 			for (int i=0;i<ilength;i++){

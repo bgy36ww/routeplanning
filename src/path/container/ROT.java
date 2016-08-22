@@ -3,8 +3,8 @@ import java.io.*;
 import java.util.Queue;
 import path.communication.*;
 
-public class ROT{
-	static public int maxsize=2500;
+public class ROT implements Comparable<ROT> {
+	static public int maxsize=1000;
 	public int locationX;
 	public int locationY;
         
@@ -32,6 +32,10 @@ public class ROT{
         public boolean running=false;
         
         
+        public int xx=0;
+        public int dorder=0;
+        public int ostate=0;
+        public int opod=0;
 	public int time;
 	public int state;
 	public int pLevel;
@@ -162,6 +166,7 @@ public class ROT{
 	public ROT(int id){
 		ID=id;
 		state=0;
+                ostate=0;
 		mfdMap=Amap.cMap();
 		mfbMap=Amap.cMap();
 
@@ -179,8 +184,23 @@ public class ROT{
 		dir=new int[maxsize];
 	}
         public void reset(){
+                state=ostate;
+                podhold=opod;
+                
                 mfdMap=Amap.cMap();
 		mfbMap=Amap.cMap();
+                
+                order=new int[maxsize];
+		value=new int[maxsize];
+
+		value=new int[maxsize];		
+		CoX=new int[maxsize];
+		CoY=new int[maxsize];
+		coor=new Dual[maxsize];
+		for(int i=0;i<maxsize;i++){
+			coor[i]=new Dual();
+		}
+		dir=new int[maxsize];
         }
 	/*initialize all static member should only done once*/
 	public boolean ini(ComServer com,byte[] c){
@@ -217,7 +237,16 @@ public class ROT{
             //Amap.fbMap[0][desx][desy]=ID;
         }
 
+    @Override
+    public int compareTo(ROT o) {
+        int compareunit=o.getdis();
+        return this.getdis()-compareunit;
+    }
 
+    public int getdis(){
+        return this.task.size();
+        //return (this.locationX-this.task.element().desx)^2+(this.locationY-this.task.element().desy)^2;
+    }
 
 
 }
