@@ -56,8 +56,9 @@ public class Route{
                 
                 retry=false;
             Amap.reset();
-            //for (int t=0;t<10;t++)
-            //al.printFDMap(t);
+            al.ffMap=Amap.ffMap;
+            for (int t=0;t<10;t++)
+            al.printFDMap2(t);
             
             System.out.printf("\nWe have %d robots here\n",Amap.bot.length);
             System.out.flush();

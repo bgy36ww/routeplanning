@@ -12,7 +12,7 @@ public class Algorithm{
 	private int[][][] fdMap;
 	private int[][][] fpMap;
 	private int[][][] fbMap;	
-	private int[][][] ffMap;
+	public int[][][] ffMap;
 
         private Tile[][][] tile;
 	private int[][][] traceMapx;
@@ -32,13 +32,14 @@ public class Algorithm{
 	private ROT bot;
 
         public int stay(ROT b,int t,int i,int j)throws NullPointerException{
-                if (!checkRule(t+1,i,j)){throw new NullPointerException("Well, someone took this place already");}
+               
                 this.fdMap=Amap.fdMap;
 		this.fpMap=Amap.fpMap;
 		this.fbMap=Amap.fbMap;
 		this.ffMap=Amap.ffMap;
                 this.mfbMap=b.mfbMap;
                 this.mfdMap=b.mfdMap;
+                if (ffMap[t+1][i][j]==0){throw new NullPointerException("Well, someone took this place already");}
 		bot=b;
                 fbMap[t+1][i][j]=b.ID;
                 setMark(t+1,i,j,true);
@@ -51,7 +52,7 @@ public class Algorithm{
 	}
 
 	public int liftPOD(ROT b,int t,int i,int j)throws NullPointerException{
-                if (!checkRule(t+1,i,j)){throw new NullPointerException("Well, someone took this place already");}
+                
                 
                 this.fdMap=Amap.fdMap;
 		this.fpMap=Amap.fpMap;
@@ -59,6 +60,12 @@ public class Algorithm{
 		this.ffMap=Amap.ffMap;
                 this.mfbMap=b.mfbMap;
                 this.mfdMap=b.mfdMap;
+                
+                if (ffMap[t+1][i][j]==0){
+                    System.out.println(ffMap[t+1][i][j]);
+                    System.out.println(fbMap[t+1][i][j]);
+                    System.out.println(Amap.iMap[i][j]);
+                    throw new NullPointerException("Well, someone took this place already");}
 		System.out.println(fpMap[t][i][j]);
                 
                 bot=b;
@@ -76,13 +83,14 @@ public class Algorithm{
 		return t+1;
 	}
 	public int dropPOD(ROT b,int t,int i,int j)throws NullPointerException{
-                if (!checkRule(t+1,i,j)){throw new NullPointerException("Well, someone took this place already");}
+                
                 this.fdMap=Amap.fdMap;
 		this.fpMap=Amap.fpMap;
 		this.fbMap=Amap.fbMap;
 		this.ffMap=Amap.ffMap;
                 this.mfbMap=b.mfbMap;
                 this.mfdMap=b.mfdMap;
+                if (ffMap[t+1][i][j]==0){throw new NullPointerException("Well, someone took this place already");}
 		bot=b;
 		bot.state=0;
                 fbMap[t+1][i][j]=b.ID;
@@ -670,7 +678,7 @@ public void recMap2(int sst,int t, int dex,int dey) throws NullPointerException{
             int i3=i2;
             int j3=j2;
             
-            //setMark(t,i,j,false);
+            setMark(t,i,j,false);
             setMark(t,i2,j2,false);
             while (j2>j){
             setMark(t,i2,j2,false);
