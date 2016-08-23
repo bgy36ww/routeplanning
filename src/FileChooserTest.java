@@ -118,10 +118,10 @@ public class FileChooserTest extends JFrame {
             
                 
                     
-                FileReader fr=new FileReader("C:\\Users\\omelet\\Desktop\\sh\\Xiaojun/PODMap");
+                FileReader fr=new FileReader("C:\\Users\\Jonathan Huang\\Documents\\Liftians\\demo\\OKAGVLAB/PODMap");
 		fr.scanM();
 		Algorithm al=new Algorithm();
-		InputOrder ior=new InputOrder("C:\\Users\\omelet\\Desktop\\sh\\Xiaojun/input.txt");
+		InputOrder ior=new InputOrder("C:\\Users\\Jonathan Huang\\Documents\\Liftians\\demo\\OKAGVLAB/input.txt");
                 Route.init(al, ior);
 
 

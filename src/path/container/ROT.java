@@ -31,6 +31,7 @@ public class ROT implements Comparable<ROT> {
         public int cd;
         public boolean running=false;
         
+        public boolean idle=true;
         
         public int xx=0;
         public int dorder=0;
@@ -248,5 +249,9 @@ public class ROT implements Comparable<ROT> {
         //return (this.locationX-this.task.element().desx)^2+(this.locationY-this.task.element().desy)^2;
     }
 
+    public int getdisdiff(int i,int j){
+    
+        return (this.locationX-i)^2+(this.locationY-j)^2;
+    }
 
 }
