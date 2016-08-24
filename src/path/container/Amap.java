@@ -1,6 +1,8 @@
 package path.container;
 
 import java.util.ArrayList;
+import java.util.Queue;
+import java.util.Set;
 
 public class Amap{
         static public int overtime=0;
@@ -14,12 +16,19 @@ public class Amap{
 	static public int[][][] ffMap;
 	static public int nb;
 	static public ROT[] bot;
+        static public ROT[] obot;
 	static public ArrayList<ROT> botlist;
 	static public ArrayList<POD> podlist;
 	static public int time;
 	static public int ilength;
 	static public int jlength;
-        static public int sstime;
+        static public Set<ROT> idlebotset;
+        static public Set<ROT> runningbotset;
+        static public Queue<MissionPOD> missionholder;
+        static public int desx=5;
+        static public int desy=5;
+        
+        //static public int sstime;
         private static Amap instance=null; 
 	static public int[][][] cMap(){
 		return new int[currtime][ilength][jlength];

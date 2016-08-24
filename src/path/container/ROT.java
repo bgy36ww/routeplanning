@@ -8,11 +8,18 @@ public class ROT implements Comparable<ROT> {
 	public int locationX;
 	public int locationY;
         
+        public boolean calculated;
+        public boolean operating;
+       
+        
         public int turns=99;
         
         public int rx;
         public int ry;
         public int rd;
+        
+        public int operatingstages;
+        public MissionPOD missionpod;
         
         public int tx;
         public int ty;
@@ -143,7 +150,7 @@ public class ROT implements Comparable<ROT> {
                 System.out.print(missionstatus);
                 System.out.println();
                 System.out.flush();
-                return false;
+                //return false;
                 //System.exit(0);
                 }
                 return true;
@@ -157,7 +164,10 @@ public class ROT implements Comparable<ROT> {
 	}	
 
 
-        public ROT(){}
+        public ROT(int x,int y){
+        locationX=x;
+        locationY=y;
+        }
         
         
 	/* class constructor
@@ -251,7 +261,15 @@ public class ROT implements Comparable<ROT> {
 
     public int getdisdiff(int i,int j){
     
-        return (this.locationX-i)^2+(this.locationY-j)^2;
+        return (this.locationX-i)*(this.locationX-i)+(this.locationY-j)*(this.locationY-j);
+    }
+    
+    public void toMission(){
+        Task tt=new Task(missionpod.xposition,missionpod.yposition,1);
+        task.add(tt);
+        tt=new Task(Amap.desx,Amap.desy,3);
+        task.add(tt);
+        tt=new Task(missionpod.xposition,missionpod.yposition,2);
     }
 
 }

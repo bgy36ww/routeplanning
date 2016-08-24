@@ -9,6 +9,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -16,6 +18,7 @@ import java.util.logging.Logger;
 import path.Route;
 import path.communication.ComServer;
 import path.container.Amap;
+import path.container.MissionPOD;
 import path.container.ROT;
 import path.converter.ConCom;
 import path.io.BotCommander;
@@ -32,8 +35,9 @@ public class WServer implements Runnable{
     protected boolean      isStopped    = false;
     protected Thread       runningThread= null;
     protected ExecutorService threadPool =
-        Executors.newFixedThreadPool(11);
-    protected int robotnumber=2;
+        Executors.newFixedThreadPool(20);
+    
+    //protected int robotnumber=2;
     public boolean ready=false;
     public ArrayList<ROT> rlist=new ArrayList<>();
     
@@ -61,12 +65,17 @@ public class WServer implements Runnable{
     @Override
     public void run() {
         
-        robotnumber=Amap.bot.length;
-        ConCom concom=new ConCom();
+        
+        //ConCom concom=new ConCom();
         synchronized(this){
             this.runningThread = Thread.currentThread();
         }
-        WOut wout=new WOut();
+        //Initialzation
+        this.threadPool.execute(
+                new WOut());
+        
+        
+        
         System.out.println("Connection get");
                     System.out.flush();
         openServerSocket();
@@ -85,62 +94,31 @@ public class WServer implements Runnable{
                 throw new RuntimeException(
                     "Error accepting client connection", e);
             }
-
             System.out.printf("Got the %d machine", ind);
+            
+
             //create a new robot
             //wait until all robot is connected
             ROT r=connectBOT(clientSocket,ind+1);
             Amap.bot[ind]=r;
-            r.task=InputOrder.readTask(ind);
-            System.out.printf("The size of this task is %d\n",r.task.size());
             rlist.add(r);
-            if (ind+1<robotnumber){ind++;continue;}
-
-            try{
-    
-            //refresh robot starting position
-            for (ROT rr:rlist){
-            try {
-                rr.getpos();
-                rr.locationX=(rr.rx+100)/1000;
-                rr.locationY=(rr.ry+100)/1000;
-                rr.direction=(rr.rd+45)/90*90;
-                rr.direction=rr.toD(rr.direction);
-                System.out.printf("This robot is %d and its starting location is %d %d \n", rr.ID,rr.locationX,rr.locationY);
-            } catch (Exception ex) {
-            }
-            }
-
-            Amap.sstime=0;
-            
-            
-            //should start planning here
-            
-            ready=true;
-            //System.exit(0);
-            
-            
-            Route.refresh();
-            
-            
-            for (ROT rr:rlist){
+            Amap.idlebotset.add(r);
             this.threadPool.execute(
-                new WBot(concom,rr));}
+                new WBot(r));
             
-            //wout.run();
-            this.threadPool.execute(wout);
-            }
-            finally{stop();}
         }
+        
+        
         
         while (true){
             int ttr=rlist.size();
             int tt=0;
             
             
-            while (finishe<alive){try {
+            while (finishe<alive){
+                try {
                 Thread.sleep(10);
-                System.out.println("Sleeping");
+                
                 } catch (InterruptedException ex) {
                     Logger.getLogger(WServer.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -156,16 +134,13 @@ public class WServer implements Runnable{
             
              finishe=0;
             if (alive==0){break;}
-            
-            
-            //break;
         }
         
         
         
         this.threadPool.shutdown();
         System.out.println("Server Stopped.") ;
-        System.exit(0);
+        //System.exit(0);
     }
     
     public synchronized void stop(){
@@ -193,6 +168,7 @@ public class WServer implements Runnable{
         ComServer coms=new ComServer(cs);
         InputOrder io=Route.getOrder();
         r=new ROT(id);
+        r.idle=true;
         r.ini(coms,concom.checkStatus());
     return r;
     }

@@ -13,7 +13,7 @@ public class Route{
 	static private rMap rmap;
         static public void init(Algorithm a,InputOrder io){
             al=a;
-            ior=io;
+            //ior=io;
         }
         static public InputOrder getOrder(){
             return ior;
@@ -41,8 +41,7 @@ public class Route{
         static public synchronized void refresh(){
             
            // System.out.println(Amap.fpMap[4][18][4]);
-            
-            int time=0;
+
             boolean retry=true;
             while (retry){
                 
@@ -75,8 +74,6 @@ public class Route{
                 int btime=0;
                 try{
                 for (Task ts:rr.task){
-                    
-                    //System.out.printf("The s tarting location x is %d the starting location y is %d the starting direction is %d\n", rr.locationX, rr.locationY, rr.direction);
                     System.out.printf("The destination location x is %d the destination location y is %d the ID is %d\n", ts.desx, ts.desy, rr.ID);
                     btime=planTask(ts,rr, rr.tx, rr.ty, rr.td, ts.desx, ts.desy, btime);
                     rr.turns=rr.turns>btime?btime:rr.turns;
@@ -89,13 +86,7 @@ public class Route{
                     System.out.printf("The %d robot is down", rr.ID);
                     for (int i=ind;i>0;i--){
                     Amap.bot[i]=Amap.bot[i-1];
-                    
                     }
-                    //for (int t=0;t<Amap.time;t++)
-                    //al.printFDMap(t);
-                    //for (int t=0;t<Amap.time;t++)
-                    //al.printFDMap2(t);
-                    
                     Amap.bot[0]=kt;
                     break;
                 }
@@ -122,11 +113,6 @@ public class Route{
             }
                 //rr.mission=ConCom.toSommand(time, time, btime, btime, time, time, time)
             }
-            //for (int t=0;t<Amap.time;t++)
-            //al.printFDMap(t);
-         
-            //al.printFDMap(1);
-            
             System.out.println("let's see the different");
             //System.exit(0);
             

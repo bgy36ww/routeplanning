@@ -20,22 +20,21 @@ public class WOut implements Runnable{
 
     private disout dis;
     public WOut(){
-    
-        try {
-            dis=new disout();
-        } catch (IOException ex) {
-            Logger.getLogger(WOut.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     @Override
     public void run() {
-        try {
-            
+        
+            try {
+            dis=new disout();
+            } catch (IOException ex) {
+            Logger.getLogger(WOut.class.getName()).log(Level.SEVERE, null, ex);
+            }
             while(true){
+                try{
                 Thread.sleep(100);
                 //Thread.yield();
                 dis.write(-900);
-                for (ROT r:Amap.bot){
+                for (ROT r:Amap.obot){
                     
                     dis.write(-800);
                     dis.write(r.ID);
@@ -50,12 +49,17 @@ public class WOut implements Runnable{
                 
                 dis.write(-899);
                 Thread.sleep(100);
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(WOut.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(WOut.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                } catch (IOException ex) {
+                try {
+                dis=new disout();
+                } catch (IOException ex1) {
+                    Logger.getLogger(WOut.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+                } catch (InterruptedException ex) {
+                Logger.getLogger(WOut.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                }
+        
     }
     
 }

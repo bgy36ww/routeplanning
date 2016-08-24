@@ -76,17 +76,7 @@ public class FileChooserTest extends JFrame {
 	filename.setText("Waiting for connection");
 	String s1=c.getCurrentDirectory().toString()+"/"+c.getSelectedFile().getName();
         System.out.println(s1);
-	c = new JFileChooser();
-     	// Demonstrate "Open" dialog:
-	String s=null;
-      	rVal = c.showOpenDialog(FileChooserTest.this);
-      	if (rVal == JFileChooser.APPROVE_OPTION) {
-	s=(c.getCurrentDirectory().toString()+"/"+c.getSelectedFile().getName());
-        System.out.println(s);
-      	}
-      	if (rVal == JFileChooser.CANCEL_OPTION) {
-     	}
-	getback(s1,s);
+	getback(s1);
 
 
 
@@ -118,8 +108,7 @@ public class FileChooserTest extends JFrame {
             
                 
                     
-                FileReader fr=new FileReader("C:\\Users\\Jonathan Huang\\Documents\\Liftians\\demo\\OKAGVLAB/PODMap");
-		fr.scanM();
+                mapgen();
 		Algorithm al=new Algorithm();
 		InputOrder ior=new InputOrder("C:\\Users\\Jonathan Huang\\Documents\\Liftians\\demo\\OKAGVLAB/input.txt");
                 Route.init(al, ior);
@@ -193,33 +182,60 @@ public class FileChooserTest extends JFrame {
 
     }
   }
-  public static void getback(String s,String s1){
+  public static void mapgen(){
+                Amap.ilength=20;
+		Amap.jlength=10;
+		Amap.fdMap=new int[Amap.maxsize][Amap.ilength][Amap.jlength];
+		Amap.fpMap=new int[Amap.maxsize][Amap.ilength][Amap.jlength];
+		Amap.fbMap=new int[Amap.maxsize][Amap.ilength][Amap.jlength];
+		Amap.ffMap=new int[Amap.maxsize][Amap.ilength][Amap.jlength];
+
+		Amap.tpMap=new int[Amap.ilength][Amap.jlength];
+                
+		Amap.iMap=new int[][] {
+                { 0,0,0,0,0,0,1,1,1,0},
+                { 0,0,0,0,0,0,1,1,1,0},
+                { 0,0,0,0,0,0,1,1,1,0},
+                { 0,0,0,0,0,0,1,1,1,0},
+                { 1,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,1},
+                { 1,2,2,1,2,2,1,2,2,1},
+                { 1,2,2,1,0,0,1,2,2,1},
+                { 1,2,2,1,0,0,1,2,2,1},
+                { 1,2,2,1,2,2,1,2,2,1},
+                { 1,2,2,1,2,2,1,2,2,1},
+                { 1,1,1,1,1,1,1,1,1,1},
+                { 1,2,2,1,2,2,1,2,2,1},
+                { 1,2,2,1,2,2,1,2,2,1},
+                { 1,2,2,1,0,0,1,2,2,1},
+                { 1,2,2,1,0,0,1,2,2,1},
+                { 1,2,2,1,2,2,1,2,2,1},
+                { 1,1,1,1,1,1,1,1,1,1}
+                };
+                
+
+		for (int i=0;i<Amap.ilength;i++)
+			for (int j=0;j<Amap.jlength;j++){
+				if (Amap.iMap[i][j]==2){
+					Amap.tpMap[i][j]=1;
+				}
+			}
+
+		for (int t=0;t<Amap.currtime;t++){
+			for (int i=0;i<Amap.ilength;i++){
+			Amap.ffMap[t][i]=Amap.iMap[i].clone();
+			Amap.fpMap[t][i]=Amap.tpMap[i].clone();}
+		}
+		
+  
+  }
+  
+  public static void getback(String s){
 		ComServer out=null;
 		try{
-                    //disout dis=new disout();
-                    
-		//initialize communication protocals
-		//String fp="/path/documents/connectionprotocal.txt";
-		//InputStream fis=Route.class.getResourceAsStream(fp);
-		//System.out.println(Route.class.getResource(fp));
-		//if (fis==null){System.exit(0);}
-		//FileReader fr=new FileReader();
-		//fr.newFile(fis);
-		//fr.readC();
-		//fp="/path/documents/addressprotocal.txt";
-		//fis=Route.class.getResourceAsStream(fp);
-		//fr.newFile(fis);
-		//fr.readF();
-		
-		//read commands from file
-		//BotCommander bt=new BotCommander(s);
-				
-                
-                
-                
-                
-                FileReader fr=new FileReader(s1);
-		fr.scanM();
+                mapgen();
 		Algorithm al=new Algorithm();
 		InputOrder ior=new InputOrder(s);
                 Route.init(al, ior);
@@ -344,6 +360,7 @@ public class FileChooserTest extends JFrame {
 
   public static void main(String[] args) {
     		run(new FileChooserTest(), 250, 110);
+                
 
   }
 
