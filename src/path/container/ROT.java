@@ -77,21 +77,29 @@ public class ROT implements Comparable<ROT> {
 
 
         public int toAngle(int d){
-       // if (d==1) return 180;
-        //if (d==2) return 90;
-        //if (d==3) return 0;
-        //if (d==4) return 270;
-        if (d==1) return 270;
-        if (d==2) return 0;
-        if (d==3) return 90;
-        if (d==4) return 180;
+        if (d==1) return 180;
+        if (d==2) return 90;
+        if (d==3) return 0;
+        if (d==4) return 270;
+        //if (d==1) return 270;
+        //if (d==2) return 0;
+        //if (d==3) return 90;
+        //if (d==4) return 180;
         return 0;
         }
+        public int toAngle2(int d){
+        if (d==1) return 180;
+        if (d==2) return 90;
+        if (d==3) return 0;
+        if (d==4) return 270;
+            return 0;
+        }
+        
         public int toD(int d){
-        if (d==270) return 1;
-        if (d==0) return 2;
-        if (d==90) return 3;
-        if (d==180) return 4;
+        if (d==270) return 4;
+        if (d==0) return 3;
+        if (d==90) return 2;
+        if (d==180) return 1;
         return 0;
         }
         

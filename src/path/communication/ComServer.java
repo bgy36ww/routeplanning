@@ -83,7 +83,7 @@ public class ComServer {
         
         //log recording
 //	logwriter.write(sb.toString()+" ");
-	//System.out.println(sb.toString()+" ");
+	System.out.println(sb.toString()+" ");
 	
         //error checking
         while ((int)(bt&0xff)-252!=0){
@@ -93,7 +93,7 @@ public class ComServer {
 	sb = new StringBuilder();
 	sb.append(String.format("%02X ", bt));
 //	logwriter.write(sb.toString()+" ");
-	//System.out.println(sb.toString()+" ");
+	System.out.println(sb.toString()+" ");
 	}
         
         
@@ -104,7 +104,7 @@ public class ComServer {
 	sb = new StringBuilder();
 	sb.append(String.format("%02X ", bt));
 //	logwriter.write(sb.toString()+" ");
-	//System.out.println(n-2);
+	System.out.println(n-2);
 	}
         
 	for (int i=0;i<n-2;i++){
@@ -113,7 +113,7 @@ public class ComServer {
 	sb = new StringBuilder();
 	sb.append(String.format("%02X ", bt));
 //	logwriter.write(sb.toString()+" ");
-	//System.out.println(sb.toString()+" ");
+	System.out.println(sb.toString()+" ");
 	}
         
 	state= toArray(list);
