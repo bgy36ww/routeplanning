@@ -15,6 +15,7 @@ public class Jobfinisher implements Runnable {
 
     @Override
     public void run() {
+        while(true){
         try{
         while (Amap.picking==0){
             Thread.sleep(1000);
@@ -25,7 +26,7 @@ public class Jobfinisher implements Runnable {
         Amap.picking=2;
         }catch(Exception e){
         e.printStackTrace();
-        }
+        }}
         
     }
     

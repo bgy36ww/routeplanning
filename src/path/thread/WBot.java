@@ -73,7 +73,7 @@ public class WBot implements Runnable{
                     ex.printStackTrace();
                 }
             }
-            //while (bot.operatingstages%5!=0){
+            while (bot.operatingstages%5!=0){
             System.out.println("Bot not idle anymore");
             synchronized(Amap.get()){
             bot.toMission();
@@ -162,14 +162,21 @@ public class WBot implements Runnable{
                 }
                 
                 System.out.println("All tasks done");
-                Amap.outqueue.bqueue.remove(bot);
+                //Amap.outqueue.bqueue.remove(bot);
                 WServer.teldead();
                 if (bot.operatingstages!=3){
                 bot.operatingstages++;
                 }else{
-                    if (bot==Amap.outqueue.bqueue.peek()){}
+                    if ((bot==Amap.outqueue.bqueue.peek())&&(Amap.picking==0)){
+                        Amap.picking=1;
+                    }
+                    if ((bot==Amap.outqueue.bqueue.peek())&&(Amap.picking==2)){
+                        Amap.picking=0;
+                        Amap.outqueue.bqueue.remove(bot);
+                        bot.operatingstages++;
+                    }
                 }
-                //}
+                }
             
                 synchronized(Amap.get()){
                 Amap.iMap[bot.locationX][bot.locationY]=0;

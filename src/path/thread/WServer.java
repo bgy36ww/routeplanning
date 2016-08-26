@@ -76,6 +76,7 @@ public class WServer implements Runnable{
                 new WOut());
         this.threadPool.execute(
                 new TrafficControl());
+        this.threadPool.execute(new Jobfinisher());
         
         MissionCenter mc=new MissionCenter(Amap.idlebotset,Amap.runningbotset,Amap.missionholder);    
         MissionDispatcher md=new MissionDispatcher(mc);
