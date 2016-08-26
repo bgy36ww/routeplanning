@@ -3,6 +3,7 @@
 // From 'Thinking in Java, 3rd ed.' (c) Bruce Eckel 2002
 // www.BruceEckel.com. See copyright notice in CopyRight.txt.
 
+import Controller.MissionCenter;
 import path.*;
 import path.io.*;
 import path.graph.*;
@@ -21,6 +22,10 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +36,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import path.algorithm.Algorithm;
+import path.thread.MissionDispatcher;
+import path.thread.MissionGetter;
 import path.thread.WBot;
 import path.thread.WServer;
 
@@ -41,16 +48,12 @@ public class FileChooserTest extends JFrame {
 
   private JTextField filename = new JTextField(), dir = new JTextField();
 
-  private JButton open = new JButton("open"), save = new JButton("close"), retrive = new JButton("Connect");
+  private JButton open = new JButton("start"), save = new JButton("close"), retrive = new JButton("Connect");
 
   public FileChooserTest() {
     JPanel p = new JPanel();
-    open.addActionListener(new OpenL());
+    open.addActionListener(new RrtrL());
     p.add(open);
-    save.addActionListener(new SaveL());
-    p.add(save);
-    retrive.addActionListener(new RrtrL());
-    p.add(retrive);
 
     Container cp = getContentPane();
     cp.add(p, BorderLayout.SOUTH);
@@ -66,30 +69,33 @@ public class FileChooserTest extends JFrame {
   class RrtrL implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-      JFileChooser c = new JFileChooser();
-      // Demonstrate "Open" dialog:
-      int rVal = c.showOpenDialog(FileChooserTest.this);
-      if (rVal == JFileChooser.APPROVE_OPTION) {
-	
-        filename.setText(c.getSelectedFile().getName());
-        dir.setText(c.getCurrentDirectory().toString());
-	filename.setText("Waiting for connection");
-	String s1=c.getCurrentDirectory().toString()+"/"+c.getSelectedFile().getName();
-        System.out.println(s1);
-	getback(s1);
+        mapgen();
+        Set<ROT> ir=new HashSet();
+        Set<ROT> rr=new HashSet();
+        
+        Queue<MissionPOD> mq=new LinkedList<>();
+        
 
-
-
-
-	filename.setText("Success");
-      }
-      if (rVal == JFileChooser.CANCEL_OPTION) {
-        filename.setText("You pressed cancel");
-        dir.setText("");
-      }
-    }
+	Amap.get();
+        Amap.idlebotset=ir;
+        Amap.runningbotset=rr;
+        Amap.missionholder=mq;
+        
+        System.out.println("Mission Dispatcher running");
+        dir.setText("Mission Dispatcher running");
+        Algorithm al=new Algorithm();
+        Route.init(al);
+        ConCom concom=new ConCom();
+        WServer server=new WServer(9000);
+        filename.setText("Waiting for Graphic Connection");
+        System.out.println("Waiting for Graphic Connection");
+        server.run();
+        System.out.println("Connected");
+        filename.setText("Connected");
+        
+        
   }
-
+  }
 
   class OpenL implements ActionListener {
     @Override
@@ -110,10 +116,11 @@ public class FileChooserTest extends JFrame {
                     
                 mapgen();
 		Algorithm al=new Algorithm();
-		InputOrder ior=new InputOrder("C:\\Users\\Jonathan Huang\\Documents\\Liftians\\demo\\OKAGVLAB/input.txt");
-                Route.init(al, ior);
-
-
+                Route.init(al);
+                ConCom concom=new ConCom();
+                WServer server=new WServer(9000);
+                server.run();
+                
 		//bt.read();	
 		//Initiate Planning Process
 		//store result in rMap class
@@ -122,13 +129,13 @@ public class FileChooserTest extends JFrame {
 		//rMap rmap=new rMap(Amap.fdMap,Amap.fbMap,Amap.fpMap,Amap.iMap,Amap.time+1);
 		System.out.println("get");
 		
-                ConCom concom=new ConCom();
+                
                 //out=new ComServer();
                 
-                WServer server=new WServer(9000);
                 
                 
-                server.run();
+                
+                
                 ///*
                 
                 
@@ -183,6 +190,8 @@ public class FileChooserTest extends JFrame {
     }
   }
   public static void mapgen(){
+                Amap.obot=new LinkedList<>();
+        
                 Amap.ilength=20;
 		Amap.jlength=10;
 		Amap.fdMap=new int[Amap.maxsize][Amap.ilength][Amap.jlength];
@@ -238,7 +247,7 @@ public class FileChooserTest extends JFrame {
                 mapgen();
 		Algorithm al=new Algorithm();
 		InputOrder ior=new InputOrder(s);
-                Route.init(al, ior);
+                Route.init(al);
 
 
 		//bt.read();	
@@ -360,6 +369,7 @@ public class FileChooserTest extends JFrame {
 
   public static void main(String[] args) {
     		run(new FileChooserTest(), 250, 110);
+                
                 
 
   }

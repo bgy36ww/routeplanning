@@ -7,6 +7,7 @@ package Controller;
 
 import java.util.Queue;
 import java.util.Set;
+import path.container.Amap;
 import path.container.MissionPOD;
 import path.container.ROT;
 
@@ -16,7 +17,7 @@ import path.container.ROT;
  */
 public class MissionCenter {
     public Set<ROT> idlebotset;
-    public Set<ROT> runningbotset;
+    final public Set<ROT> runningbotset;
     public Queue<MissionPOD> missionholder;
     public MissionCenter(Set<ROT> is,Set<ROT> rs,Queue<MissionPOD> mh){
         idlebotset=is;
@@ -24,12 +25,14 @@ public class MissionCenter {
         missionholder=mh;
     }
     
-    public synchronized boolean publishMission(){
+    public boolean publishMission(){
+        synchronized(runningbotset){
         if ((missionholder.isEmpty())||(idlebotset.isEmpty())){
         return true;
         }
         while ((!missionholder.isEmpty())&&(!idlebotset.isEmpty()))
         {
+               System.out.println("Dispatching mission");
                MissionPOD fp;
                fp=missionholder.remove();
                ROT br=null;
@@ -38,14 +41,23 @@ public class MissionCenter {
                    br=b.getdisdiff(fp.xposition, fp.yposition)<brdis?b:br;
                    brdis=br==null?brdis:br.getdisdiff(fp.xposition, fp.yposition);
                }
+               synchronized (br){
                System.out.printf("Dispatched %d %d POD to %d %d Bot\n", fp.xposition,fp.yposition,br.locationX,br.locationY);
                
-               idlebotset.remove(br);
-               runningbotset.add(br);
+               Amap.iMap[br.locationX][br.locationY]=1;
                br.missionpod=fp;
                br.operatingstages=1;
-               br.idle=false;
+               
+               //br.toMission();
+               synchronized (idlebotset){
+               idlebotset.remove(br);}
+               
+               synchronized (runningbotset){
+               runningbotset.add(br);}
+
+               }
         }
         return false;
+        }
     }
 }

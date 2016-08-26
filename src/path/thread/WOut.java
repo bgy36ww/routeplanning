@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import path.communication.disout;
 import path.container.Amap;
+import path.container.DBot;
 import path.container.ROT;
 
 /**
@@ -26,15 +27,21 @@ public class WOut implements Runnable{
         
             try {
             dis=new disout();
+            System.out.println("Connection get from Graph");
             } catch (IOException ex) {
             Logger.getLogger(WOut.class.getName()).log(Level.SEVERE, null, ex);
             }
             while(true){
                 try{
+                while (Amap.obot.isEmpty()){
+                Thread.sleep(100);
+                }
                 Thread.sleep(100);
                 //Thread.yield();
+                //System.out.println("Yeah, I am printing");
                 dis.write(-900);
-                for (ROT r:Amap.obot){
+                synchronized(Amap.obot){
+                for (DBot r:Amap.obot){
                     
                     dis.write(-800);
                     dis.write(r.ID);
@@ -45,7 +52,7 @@ public class WOut implements Runnable{
                     dis.write(r.ostate+r.xx);
                     r.xx=0;
                     dis.write(-799);
-                }
+                }}
                 
                 dis.write(-899);
                 Thread.sleep(100);
@@ -53,10 +60,10 @@ public class WOut implements Runnable{
                 try {
                 dis=new disout();
                 } catch (IOException ex1) {
-                    Logger.getLogger(WOut.class.getName()).log(Level.SEVERE, null, ex1);
+                    ex1.printStackTrace();
                 }
                 } catch (InterruptedException ex) {
-                Logger.getLogger(WOut.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
                 }
                 }
         

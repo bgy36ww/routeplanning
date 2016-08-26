@@ -12,17 +12,13 @@ public class test_main{
 	
 	public static void main(String[] args){
             Set<ROT> ir=new HashSet();
-            ir.add(new ROT(0,0));
-            ir.add(new ROT(2,4));
-            ir.add(new ROT(7,8));
-            ir.add(new ROT(5,5));
             Set<ROT> rr=new HashSet();
             Queue<MissionPOD> mq=new LinkedList<>();
-            mq.add(new MissionPOD(1,4,5));
-            mq.add(new MissionPOD(1,8,0));
-            mq.add(new MissionPOD(1,9,9));
-            mq.add(new MissionPOD(1,9,9));
-            mq.add(new MissionPOD(1,9,9));
+            mq.add(new MissionPOD(1,8,1));
+            mq.add(new MissionPOD(1,8,2));
+            mq.add(new MissionPOD(1,18,1));
+            mq.add(new MissionPOD(1,18,2));
+            mq.add(new MissionPOD(1,18,8));
             
             MissionCenter mc=new MissionCenter(ir,rr,mq);
             

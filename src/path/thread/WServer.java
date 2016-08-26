@@ -5,6 +5,7 @@
  */
 package path.thread;
 
+import Controller.MissionCenter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.IOException;
@@ -73,8 +74,14 @@ public class WServer implements Runnable{
         //Initialzation
         this.threadPool.execute(
                 new WOut());
+        this.threadPool.execute(
+                new TrafficControl());
         
-        
+        MissionCenter mc=new MissionCenter(Amap.idlebotset,Amap.runningbotset,Amap.missionholder);    
+        MissionDispatcher md=new MissionDispatcher(mc);
+        this.threadPool.execute(md);
+        MissionGetter mg=new MissionGetter(Amap.missionholder);
+        this.threadPool.execute(mg);
         
         System.out.println("Connection get");
                     System.out.flush();
@@ -94,47 +101,34 @@ public class WServer implements Runnable{
                 throw new RuntimeException(
                     "Error accepting client connection", e);
             }
-            System.out.printf("Got the %d machine", ind);
+            System.out.printf("Got the %d machine", ind+1);
             
 
             //create a new robot
             //wait until all robot is connected
             ROT r=connectBOT(clientSocket,ind+1);
-            Amap.bot[ind]=r;
             rlist.add(r);
-            Amap.idlebotset.add(r);
+            try {
+                r.getpos();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            r.setDBot();
+            synchronized(Amap.obot){
+            Amap.obot.add(r.dbot);}
             this.threadPool.execute(
                 new WBot(r));
-            
+            Amap.idlebotset.add(r);
+            r.idle=true;
+            ind++;
         }
+            
         
         
         
-        while (true){
-            int ttr=rlist.size();
-            int tt=0;
-            
-            
-            while (finishe<alive){
-                try {
-                Thread.sleep(10);
-                
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(WServer.class.getName()).log(Level.SEVERE, null, ex);
-                }
-}
-            
-           
-            System.out.println(ttr);
-            
-            System.out.println("algorithm reset");
-            Route.refresh();
-            System.out.println("reset finished");
-            //for (ROT rr:rlist)rr.running=false;
-            
-             finishe=0;
-            if (alive==0){break;}
-        }
+        
         
         
         
@@ -166,7 +160,7 @@ public class WServer implements Runnable{
         ConCom concom=new ConCom();
         ROT r=null;//=new ROT(0,0,ind++);
         ComServer coms=new ComServer(cs);
-        InputOrder io=Route.getOrder();
+        //InputOrder io=Route.getOrder();
         r=new ROT(id);
         r.idle=true;
         r.ini(coms,concom.checkStatus());

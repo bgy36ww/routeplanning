@@ -8,16 +8,16 @@ import path.converter.ConCom;
 
 public class Route{
         static private Algorithm al;
-        static private InputOrder ior;
+        //static private InputOrder ior;
     
 	static private rMap rmap;
-        static public void init(Algorithm a,InputOrder io){
+        static public void init(Algorithm a){
             al=a;
             //ior=io;
         }
-        static public InputOrder getOrder(){
-            return ior;
-        }
+       // static public InputOrder getOrder(){
+       //     return ior;
+       // }
 	static public void ini(){
 
 	}
@@ -40,24 +40,32 @@ public class Route{
         
         static public synchronized void refresh(){
             
-           // System.out.println(Amap.fpMap[4][18][4]);
-
+           // System.out.println(Amap.fpMap[4][18][4
+           
+           synchronized (Amap.runningbotset){
             boolean retry=true;
+            Amap.bot=new ROT[Amap.runningbotset.size()];
+            int indd=0;
+            for (ROT rr:Amap.runningbotset){
+            Amap.bot[indd]=rr;
+            indd++;
+            }
             while (retry){
                 
                 //rearrange(Amap.bot);
                 
                 for (ROT rr:Amap.bot){
                     Amap.fbMap[0][rr.locationX][rr.locationY]=rr.ID;
-                    //Amap.fbMap[1][rr.locationX][rr.locationY]=rr.ID;
+                    Amap.fbMap[1][rr.locationX][rr.locationY]=rr.ID;
+                    Amap.fbMap[2][rr.locationX][rr.locationY]=rr.ID;
                 }
                 
                 
                 retry=false;
             Amap.reset();
             al.ffMap=Amap.ffMap;
-            for (int t=0;t<10;t++)
-            al.printFDMap2(t);
+            //for (int t=0;t<10;t++)
+            //al.printFDMap2(t);
             
             System.out.printf("\nWe have %d robots here\n",Amap.bot.length);
             System.out.flush();
@@ -79,11 +87,21 @@ public class Route{
                     rr.turns=rr.turns>btime?btime:rr.turns;
                     //break;
                 }}
-                catch(NullPointerException e){
+                catch(Exception e){
                     ROT kt=rr;
                     retry=true; 
                     System.out.println("OH BOY!!!!!!");
                     System.out.printf("The %d robot is down", rr.ID);
+                    
+                    for (int i=0;i<30;i++){
+                        al.printFDMap(i);
+                        
+                    }
+                    for (int i=0;i<30;i++){
+                        al.printFDMap2(i);
+                        
+                    }
+                    //System.exit(0);
                     for (int i=ind;i>0;i--){
                     Amap.bot[i]=Amap.bot[i-1];
                     }
@@ -111,8 +129,10 @@ public class Route{
                 }
                 
             }
-                //rr.mission=ConCom.toSommand(time, time, btime, btime, time, time, time)
             }
+                //rr.mission=ConCom.toSommand(time, time, btime, btime, time, time, time)
+            
+           }
             System.out.println("let's see the different");
             //System.exit(0);
             

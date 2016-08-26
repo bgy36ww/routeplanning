@@ -25,7 +25,7 @@ public class newunittest {
 		fr.scanM();
 		Algorithm al=new Algorithm();
 		InputOrder ior=new InputOrder("/home/wei/LiftianPathFinding/sf_sh/Xiaojun/input.txt");
-                Route.init(al, ior);
+                Route.init(al);
                 
                 Amap.get();
                 Amap.cMap();

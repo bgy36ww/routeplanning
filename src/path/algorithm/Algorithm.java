@@ -309,8 +309,8 @@ public class Algorithm{
 			//colision check
 			if (ffMap[t][i][j]==0) return false;
 			if ((bot.state==1)&&(fpMap[t][i][j]!=0)) return false;	
-			if ((fpMap[t][i][j]==0)&&(fbMap[t][i][j]==0)) return true;			
-			if ((bot.state==0)&&(fbMap[t][i][j]==0)) return true;
+			if ((fpMap[t][i][j]==0)&&((fbMap[t][i][j]==0)||(fbMap[t][i][j]==bot.ID))) return true;			
+			if ((bot.state==0)&&((fbMap[t][i][j]==0)||(fbMap[t][i][j]==bot.ID))) return true;
 		}
 		return false;
 
@@ -449,7 +449,7 @@ public class Algorithm{
 		System.out.println(t);		
                 for (int i=0;i<Amap.ilength;++i){
                         for (int j=0;j<Amap.jlength;++j){
-                                System.out.print(Amap.fpMap[t][i][j]);
+                                System.out.print(dMap[t][i][j]);
                                 System.out.print("  ");
                         }
                         System.out.println();
@@ -513,7 +513,7 @@ public class Algorithm{
         
        boolean bflag=false;
 	
-	while (((aMap[t][dsx][dsy]==0))&&(t+1<aMap.length)){//||(t<Amap.overtime)
+	while (((ffMap[t+3][dsx][dsy]==0)||(ffMap[t+2][dsx][dsy]==0)||(ffMap[t+1][dsx][dsy]==0))||(aMap[t][dsx][dsy]==0)&&(t+1<aMap.length)){//||(t<Amap.overtime)
             
 		for (int i=0;i<iLength;i++){
 			for (int j=0;j<jLength;j++){
@@ -524,7 +524,7 @@ public class Algorithm{
 				} 
 			}
 		}
-                //printFDMap(t+1);
+                //printFDMap(t  +1);
 		t++;
 	}
         //System.out.printf("Current t is %d\n",t);

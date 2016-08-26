@@ -5,6 +5,7 @@ import java.util.Queue;
 import java.util.Set;
 
 public class Amap{
+        static public OutQueue outqueue;
         static public int overtime=0;
 	static public int maxsize=1000;
 	static public int currtime=1000;
@@ -16,7 +17,7 @@ public class Amap{
 	static public int[][][] ffMap;
 	static public int nb;
 	static public ROT[] bot;
-        static public ROT[] obot;
+        static public Queue<DBot> obot;
 	static public ArrayList<ROT> botlist;
 	static public ArrayList<POD> podlist;
 	static public int time;
@@ -28,6 +29,8 @@ public class Amap{
         static public int desx=5;
         static public int desy=5;
         
+        static public int picking=0;
+        
         //static public int sstime;
         private static Amap instance=null; 
 	static public int[][][] cMap(){
@@ -37,7 +40,7 @@ public class Amap{
                 
                 return new Tile[currtime][ilength][jlength];
         }
-        private Amap(){botlist=new ArrayList<ROT>();podlist=new ArrayList<POD>();}
+        private Amap(){botlist=new ArrayList<ROT>();podlist=new ArrayList<POD>();outqueue=new OutQueue();}
         public static synchronized Amap get(){
         if (instance==null){
             instance=new Amap();

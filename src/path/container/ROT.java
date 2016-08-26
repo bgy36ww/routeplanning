@@ -1,5 +1,6 @@
 package path.container;
 import java.io.*;
+import java.util.LinkedList;
 import java.util.Queue;
 import path.communication.*;
 
@@ -11,12 +12,15 @@ public class ROT implements Comparable<ROT> {
         public boolean calculated;
         public boolean operating;
        
+        public DBot dbot;
         
         public int turns=99;
         
         public int rx;
         public int ry;
         public int rd;
+        
+        public boolean ready;
         
         public int operatingstages;
         public MissionPOD missionpod;
@@ -176,7 +180,19 @@ public class ROT implements Comparable<ROT> {
 	Create every robot with it's starting map*/
         public void setTask(int t,Queue<Task> ts){taskhold=t;task=ts;}
         
+        public void setDBot(){
+            synchronized(dbot){
+            dbot.ID=ID;
+            dbot.ostate=ostate;
+            dbot.rd=rd;
+            dbot.rx=rx;
+            dbot.ry=ry;
+            dbot.xx=xx;}
+        }
+        
 	public ROT(int id){
+                dbot=new DBot();
+                task=new LinkedList<>();
 		ID=id;
 		state=0;
                 ostate=0;
@@ -267,11 +283,29 @@ public class ROT implements Comparable<ROT> {
     }
     
     public void toMission(){
-        Task tt=new Task(missionpod.xposition,missionpod.yposition,1);
+        Task tt;
+        task=new LinkedList<>();
+        //if (this.operatingstages==1){
+        tt=new Task(missionpod.xposition,missionpod.yposition,1);
+        task.add(tt);//}
+        //if (this.operatingstages==2){
+        Amap.outqueue.bqueue.add(this);
+        //this.operatingstages=3;
+        //}
+        //if (this.operatingstages==3){
+        int ii=0;
+        for (int i=0;i<Amap.outqueue.bqueue.size();i++)
+        {
+        if (((LinkedList)(Amap.outqueue.bqueue)).get(i)==this){
+            ii=i;
+        }}
+        tt=new Task(Amap.outqueue.location[ii].x,Amap.outqueue.location[ii].y,3);
         task.add(tt);
-        tt=new Task(Amap.desx,Amap.desy,3);
-        task.add(tt);
+        //}
+        //if (this.operatingstages==4){
         tt=new Task(missionpod.xposition,missionpod.yposition,2);
+        task.add(tt);
+        //}
     }
 
 }
