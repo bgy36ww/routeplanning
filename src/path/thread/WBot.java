@@ -73,6 +73,7 @@ public class WBot implements Runnable{
                     ex.printStackTrace();
                 }
             }
+            Amap.iMap[bot.locationX][bot.locationY]=1;
             while (bot.operatingstages%5!=0){
             System.out.println("Bot not idle anymore");
             synchronized(Amap.get()){
@@ -111,9 +112,8 @@ public class WBot implements Runnable{
                     System.out.printf("yeeeee the destination for %d is %d and %d %d\n",bot.ID, mdesx,mdesy,mdesd);
                     System.out.printf("Also my tasks is %d %d\n",bot.task.element().desx,bot.task.element().desy);
                 }
-                    bot.mission=ConCom.toSommand(ind,bot.ID ,1 ,bot.dorder, mdesx,mdesy ,bot.toAngle(mdesd));
+                    bot.mission=ConCom.toSommand(ind++,bot.ID ,1 ,bot.dorder, mdesx,mdesy ,bot.toAngle(mdesd));
                 synchronized (bot){
-                    ind++;
                     bot.write(bot.mission, wtime);
                     System.out.println("I am sending my tasks");
                     bot.getpos();
@@ -164,18 +164,20 @@ public class WBot implements Runnable{
                 System.out.println("All tasks done");
                 //Amap.outqueue.bqueue.remove(bot);
                 WServer.teldead();
-                if (bot.operatingstages!=3){
+                if (bot.operatingstages<3){
                 bot.operatingstages++;
-                }else{
-                    if ((bot==Amap.outqueue.bqueue.peek())&&(Amap.picking==0)){
+                }
+                if (bot.operatingstages==3){
+                    if ((bot==Amap.outqueue.bqueue.peek())&&(Amap.picking==0)&&(bot.locationX==Amap.outqueue.location[0].x)&&(bot.locationY==Amap.outqueue.location[0].y)){
                         Amap.picking=1;
                     }
-                    if ((bot==Amap.outqueue.bqueue.peek())&&(Amap.picking==2)){
-                        Amap.picking=0;
-                        Amap.outqueue.bqueue.remove(bot);
-                        bot.operatingstages++;
+                }
+                if (bot.operatingstages==4){
+                    if ((bot.locationX==bot.missionpod.xposition)&&(bot.locationY==bot.missionpod.yposition)){
+                    bot.operatingstages++;
                     }
                 }
+                
                 }
             
                 synchronized(Amap.get()){

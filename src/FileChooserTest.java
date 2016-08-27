@@ -102,7 +102,7 @@ public class FileChooserTest extends JFrame {
     public void actionPerformed(ActionEvent e) {
         System.out.print("YOOOO");
       DBConnection db=new DBConnection();
-      db.getconnect();
+      
     }
   }
 

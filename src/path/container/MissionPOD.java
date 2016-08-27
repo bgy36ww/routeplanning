@@ -13,10 +13,12 @@ public class MissionPOD {
     public int ordernumber;
     public int xposition;
     public int yposition;
-    public MissionPOD(int o,int x,int y){
+    public String missionC;
+    public MissionPOD(int o,int x,int y,String mi){
         ordernumber=o;
         xposition=x;
         yposition=y;
+        missionC=mi;
     }
     
 }

@@ -14,11 +14,11 @@ public class test_main{
             Set<ROT> ir=new HashSet();
             Set<ROT> rr=new HashSet();
             Queue<MissionPOD> mq=new LinkedList<>();
-            mq.add(new MissionPOD(1,8,1));
-            mq.add(new MissionPOD(1,8,2));
-            mq.add(new MissionPOD(1,18,1));
-            mq.add(new MissionPOD(1,18,2));
-            mq.add(new MissionPOD(1,18,8));
+            //mq.add(new MissionPOD(1,8,1));
+            //mq.add(new MissionPOD(1,8,2));
+            //mq.add(new MissionPOD(1,18,1));
+            //mq.add(new MissionPOD(1,18,2));
+            //mq.add(new MissionPOD(1,18,8));
             
             MissionCenter mc=new MissionCenter(ir,rr,mq);
             

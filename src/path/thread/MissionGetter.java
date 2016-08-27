@@ -8,6 +8,7 @@ package path.thread;
 import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import path.communication.DBConnection;
 import path.container.MissionPOD;
 
 /**
@@ -16,13 +17,22 @@ import path.container.MissionPOD;
  */
 public class MissionGetter implements Runnable{
     Queue<MissionPOD> q;
-    public MissionGetter(Queue<MissionPOD> mq){
+    DBConnection dbc;
+    public MissionGetter(Queue<MissionPOD> mq,DBConnection db){
     q=mq;
+    dbc=db;
     }
     @Override
     public void run() {
-        
+        try{
+        while (true){
+            
+        q.add(dbc.getPOD());
+        Thread.sleep(1000);
+        }}catch (Exception e){e.printStackTrace();}
 
+        
+        /*
         
         try {
             q.add(new MissionPOD(1,8,1));
@@ -51,6 +61,6 @@ public class MissionGetter implements Runnable{
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
-    
+        */
     }    
 }

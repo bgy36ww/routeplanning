@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import path.Route;
 import path.communication.ComServer;
+import path.communication.DBConnection;
 import path.container.Amap;
 import path.container.MissionPOD;
 import path.container.ROT;
@@ -76,12 +77,13 @@ public class WServer implements Runnable{
                 new WOut());
         this.threadPool.execute(
                 new TrafficControl());
-        this.threadPool.execute(new Jobfinisher());
-        
+        DBConnection dbc=new DBConnection();
+        this.threadPool.execute(new Jobfinisher(dbc));
+        dbc=new DBConnection();
         MissionCenter mc=new MissionCenter(Amap.idlebotset,Amap.runningbotset,Amap.missionholder);    
         MissionDispatcher md=new MissionDispatcher(mc);
         this.threadPool.execute(md);
-        MissionGetter mg=new MissionGetter(Amap.missionholder);
+        MissionGetter mg=new MissionGetter(Amap.missionholder,dbc);
         this.threadPool.execute(mg);
         
         System.out.println("Connection get");
