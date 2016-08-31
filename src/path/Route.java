@@ -1,6 +1,7 @@
 package path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import path.io.*;
 import path.container.*;
 import path.algorithm.*;
@@ -9,7 +10,7 @@ import path.converter.ConCom;
 public class Route{
         static private Algorithm al;
         //static private InputOrder ior;
-    
+        static int down=0;
 	static private rMap rmap;
         static public void init(Algorithm a){
             al=a;
@@ -41,15 +42,16 @@ public class Route{
         static public synchronized void refresh(){
             
            // System.out.println(Amap.fpMap[4][18][4
-           
+           boolean retry=true;
            synchronized (Amap.runningbotset){
-            boolean retry=true;
+            if (down==0){
             Amap.bot=new ROT[Amap.runningbotset.size()];
             int indd=0;
             for (ROT rr:Amap.runningbotset){
             Amap.bot[indd]=rr;
             indd++;
-            }
+            }}else{down--;}
+            
             while (retry){
                 
                 //rearrange(Amap.bot);
@@ -62,19 +64,20 @@ public class Route{
                 
                 
                 retry=false;
-            Amap.reset();
-            al.ffMap=Amap.ffMap;
+                Amap.reset();
+                al.ffMap=Amap.ffMap;
             //for (int t=0;t<10;t++)
             //al.printFDMap2(t);
             
-            System.out.printf("\nWe have %d robots here\n",Amap.bot.length);
-            System.out.flush();
+                System.out.printf("\nWe have %d robots here\n",Amap.bot.length);
+                System.out.flush();
             
             for (int ind=0;ind<Amap.bot.length;ind++){
                 ROT rr=Amap.bot[ind];
                 System.out.printf("The starting location for %d %d %d the starting direction is %d it has %d tasks\n",rr.ID,rr.locationX,rr.locationY,rr.direction,rr.task.size());
                 
                 rr.reset();
+                
                 rr.tx=rr.locationX;
                 rr.ty=rr.locationY;
                 rr.td=rr.direction;
@@ -88,7 +91,18 @@ public class Route{
                     //break;
                 }}
                 catch(Exception e){
+                    
                     ROT kt=rr;
+                    if (!((LinkedList)(Amap.runningbotset)).contains(kt)){
+                        Amap.bot=new ROT[Amap.runningbotset.size()];
+                        int indd=0;
+                        for (ROT rrr:Amap.runningbotset){
+                            Amap.bot[indd]=rrr;
+                            indd++;
+                            rrr.toMission();
+                        }
+                        break;
+                    }
                     retry=true; 
                     System.out.println("OH BOY!!!!!!");
                     System.out.printf("The %d robot is down", rr.ID);
@@ -106,12 +120,17 @@ public class Route{
                     Amap.bot[i]=Amap.bot[i-1];
                     }
                     Amap.bot[0]=kt;
+                    //Amap.runningbotset.remove(kt);
+                    
+                    down=2;
+                    
                     break;
+                    
                 }
                 System.out.println(btime);
                 
                 for (int ttt=btime+1;ttt<Amap.maxsize;ttt++)
-                al.setRest(ttt, rr.tx, rr.ty);
+                    al.setRest(ttt, rr.tx, rr.ty);
                 
                 Amap.time=btime>Amap.time?btime:Amap.time;
                 rr.desx=rr.CoX[1];
@@ -131,8 +150,8 @@ public class Route{
             }
             }
                 //rr.mission=ConCom.toSommand(time, time, btime, btime, time, time, time)
-            
-           }
+            }
+           
             System.out.println("let's see the different");
             //System.exit(0);
             

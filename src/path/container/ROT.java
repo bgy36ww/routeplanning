@@ -286,11 +286,12 @@ public class ROT implements Comparable<ROT> {
         Task tt;
         task=new LinkedList<>();
         if (this.operatingstages==1){
-        tt=new Task(missionpod.xposition,missionpod.yposition,1);
-        task.add(tt);}
+        //Amap.outqueue.bqueue.add(this);
+        this.operatingstages=2;
+        }
         if (this.operatingstages==2){
-        Amap.outqueue.bqueue.add(this);
-        this.operatingstages=3;
+        tt=new Task(missionpod.xposition,missionpod.yposition,1);
+        task.add(tt);
         }
         if (this.operatingstages==3){
         int ii=0;
@@ -303,6 +304,14 @@ public class ROT implements Comparable<ROT> {
         task.add(tt);
         }
         if (this.operatingstages==4){
+        tt=new Task(0,8,0);
+        task.add(tt);
+        }
+        if (this.operatingstages==5){
+        tt=new Task(7,8,0);
+        task.add(tt);
+        }
+        if (this.operatingstages==6){
         tt=new Task(missionpod.xposition,missionpod.yposition,2);
         task.add(tt);
         }

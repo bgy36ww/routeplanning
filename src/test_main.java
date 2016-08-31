@@ -20,13 +20,13 @@ public class test_main{
             //mq.add(new MissionPOD(1,18,2));
             //mq.add(new MissionPOD(1,18,8));
             
-            MissionCenter mc=new MissionCenter(ir,rr,mq);
+            //MissionCenter mc=new MissionCenter(ir,rr,mq);
             
-            MissionDispatcher md=new MissionDispatcher(mc);
+            //MissionDispatcher md=new MissionDispatcher(mc);
             
-            md.run();
+            //md.run();
             
-            System.out.print(rr.isEmpty());
+            //System.out.print(rr.isEmpty());
             
 		
 

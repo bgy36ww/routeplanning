@@ -17,9 +17,9 @@ import path.container.ROT;
  */
 public class MissionCenter {
     public Set<ROT> idlebotset;
-    final public Set<ROT> runningbotset;
+    public Queue<ROT> runningbotset;
     public Queue<MissionPOD> missionholder;
-    public MissionCenter(Set<ROT> is,Set<ROT> rs,Queue<MissionPOD> mh){
+    public MissionCenter(Set<ROT> is,Queue<ROT> rs,Queue<MissionPOD> mh){
         idlebotset=is;
         runningbotset=rs;
         missionholder=mh;
@@ -48,13 +48,14 @@ public class MissionCenter {
                br.missionpod=fp;
                br.operatingstages=1;
                
+               
                //br.toMission();
                synchronized (idlebotset){
                idlebotset.remove(br);}
                
                synchronized (runningbotset){
                runningbotset.add(br);}
-
+               Amap.outqueue.bqueue.add(br);
                }
         }
         return false;

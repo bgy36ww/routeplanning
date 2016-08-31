@@ -15,6 +15,8 @@ import java.sql.SQLException;
 //import com.jcraft.jsch.JSch;
 //import com.jcraft.jsch.Session;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import path.container.MissionPOD;
 import path.container.ROT;
 
@@ -103,8 +105,15 @@ public class DBConnection {
         }
         }
         catch(Exception e){e.printStackTrace();}
-        
- 
- 
  }
+public void reportback(String PODID){
+     try {
+         String st="SELECT GEEKPRO.F_PodReturned('"+PODID+"');";
+         pr2=conn.prepareStatement(st);
+         rs2=pr2.executeQuery();
+     } catch (SQLException ex) {
+        ex.printStackTrace();
+     }
 }
+}
+

@@ -122,7 +122,7 @@ public class WServer implements Runnable{
             synchronized(Amap.obot){
             Amap.obot.add(r.dbot);}
             this.threadPool.execute(
-                new WBot(r));
+                new WBot(r,new DBConnection()));
             Amap.idlebotset.add(r);
             r.idle=true;
             ind++;

@@ -45,6 +45,7 @@ public class FileChooserTest extends JFrame {
   private static boolean rflag;
   private static boolean wflag;
   private WServer server;
+  static public boolean starting=false;
 
   private JTextField filename = new JTextField(), dir = new JTextField();
 
@@ -69,30 +70,15 @@ public class FileChooserTest extends JFrame {
   class RrtrL implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-        mapgen();
-        Set<ROT> ir=new HashSet();
-        Set<ROT> rr=new HashSet();
         
-        Queue<MissionPOD> mq=new LinkedList<>();
-        
-
-	Amap.get();
-        Amap.idlebotset=ir;
-        Amap.runningbotset=rr;
-        Amap.missionholder=mq;
-        
-        System.out.println("Mission Dispatcher running");
         dir.setText("Mission Dispatcher running");
-        Algorithm al=new Algorithm();
-        Route.init(al);
-        ConCom concom=new ConCom();
-        WServer server=new WServer(9000);
         filename.setText("Waiting for Graphic Connection");
         System.out.println("Waiting for Graphic Connection");
-        server.run();
+
         System.out.println("Connected");
         filename.setText("Connected");
-        
+        starting=true;
+        //System.exit(0);
         
   }
   }
@@ -113,7 +99,7 @@ public class FileChooserTest extends JFrame {
             //JFileChooser c = new JFileChooser();
             
                 
-                    
+                
                 mapgen();
 		Algorithm al=new Algorithm();
                 Route.init(al);
@@ -210,16 +196,16 @@ public class FileChooserTest extends JFrame {
                 { 1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1},
                 { 1,1,1,1,1,1,1,1,1,1},
+                { 1,0,2,1,2,2,1,2,2,1},
                 { 1,2,2,1,2,2,1,2,2,1},
-                { 1,2,2,1,0,0,1,2,2,1},
-                { 1,2,2,1,0,0,1,2,2,1},
+                { 1,2,2,1,2,2,1,2,2,1},
                 { 1,2,2,1,2,2,1,2,2,1},
                 { 1,2,2,1,2,2,1,2,2,1},
                 { 1,1,1,1,1,1,1,1,1,1},
+                { 1,0,2,1,2,2,1,2,2,1},
                 { 1,2,2,1,2,2,1,2,2,1},
                 { 1,2,2,1,2,2,1,2,2,1},
-                { 1,2,2,1,0,0,1,2,2,1},
-                { 1,2,2,1,0,0,1,2,2,1},
+                { 1,2,2,1,2,2,1,2,2,1},
                 { 1,2,2,1,2,2,1,2,2,1},
                 { 1,1,1,1,1,1,1,1,1,1}
                 };
@@ -368,8 +354,35 @@ public class FileChooserTest extends JFrame {
   }
 
   public static void main(String[] args) {
-    		run(new FileChooserTest(), 250, 110);
-                
+        run(new FileChooserTest(), 250, 110);
+        
+        while (!FileChooserTest.starting){
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(FileChooserTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        }
+        
+        mapgen();
+        Set<ROT> ir=new HashSet();
+        Queue<ROT> rr=new LinkedList<ROT>();
+        Queue<MissionPOD> mq=new LinkedList<>();
+        
+
+	Amap.get();
+        Amap.idlebotset=ir;
+        Amap.runningbotset=rr;
+        Amap.missionholder=mq;
+        
+        System.out.println("Mission Dispatcher running");
+        
+        Algorithm al=new Algorithm();
+        Route.init(al);
+        ConCom concom=new ConCom();
+        WServer server=new WServer(9000);
+        server.run();
                 
 
   }

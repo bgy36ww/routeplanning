@@ -23,7 +23,7 @@ import static path.thread.WServer.finishe;
  */
 public class TrafficControl implements Runnable{
     public Set<ROT> idlebotset;
-    public Set<ROT> runningbotset;
+    public Queue<ROT> runningbotset;
     public Queue<MissionPOD> missionholder;
     
     public TrafficControl(){

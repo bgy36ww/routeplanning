@@ -24,7 +24,7 @@ public class Amap{
 	static public int ilength;
 	static public int jlength;
         static public Set<ROT> idlebotset;
-        static public Set<ROT> runningbotset;
+        static public Queue<ROT> runningbotset;
         static public Queue<MissionPOD> missionholder;
         static public int desx=5;
         static public int desy=5;
