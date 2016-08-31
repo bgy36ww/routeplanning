@@ -17,5 +17,6 @@ public class DBot {
     public int ID;
     public int ostate;
     public int xx;
+    public int podid;
     
 }

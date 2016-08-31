@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package path.thread;
 
 import java.io.IOException;
@@ -37,6 +38,7 @@ public class WBot implements Runnable{
     //public boolean running=false;
     public WBot(ROT b,DBConnection dbc){
         db=dbc;
+        
         synchronized (b){
             concom=new ConCom();
             bot=b;
@@ -46,6 +48,7 @@ public class WBot implements Runnable{
             bot.operating=true;
             bot.idle=true;
         try {
+            bot.resetall();
             bot.getpos();
             bot.locationX=(bot.rx+500)/1000;
             bot.locationY=(bot.ry+500)/1000;
@@ -154,8 +157,8 @@ public class WBot implements Runnable{
                             bot.opod=0;
                             System.out.println("I am changing the state");
                         }
-                        bot.locationX=(bot.rx+100)/1000;
-                        bot.locationY=(bot.ry+100)/1000;
+                        bot.locationX=(bot.rx+500)/1000;
+                        bot.locationY=(bot.ry+500)/1000;
                         bot.direction=(bot.rd+45)/90*90;
                         bot.direction=bot.toD(bot.direction);
                         System.out.printf("\nthe turns left for %d is %d\n",bot.ID,bot.turns);
@@ -207,9 +210,9 @@ public class WBot implements Runnable{
                             
                         }
                 }
-                if ((bot.operatingstages==4)&&(bot.locationX==0)&&(bot.locationY==8)){
+                if ((bot.operatingstages==4)&&(bot.locationX==0)&&(bot.locationY==3)){
                     bot.operatingstages++;}
-                if ((bot.operatingstages==5)&&(bot.locationX==7)&&(bot.locationY==8)){
+                if ((bot.operatingstages==5)&&(bot.locationX==6)&&(bot.locationY==3)){
                     bot.operatingstages++;}
                 
             }

@@ -46,10 +46,11 @@ public class WOut implements Runnable{
                     dis.write(-800);
                     dis.write(r.ID);
                     dis.write((Amap.ilength-1)*1000-r.rx);
-                  
+                    
                     dis.write(r.ry);
-                    dis.write((r.rd)%360);
+                    dis.write((540-r.rd)%360);
                     dis.write(r.ostate+r.xx);
+                    dis.write(r.podid);
                     r.xx=0;
                     dis.write(-799);
                 }}

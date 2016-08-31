@@ -2,7 +2,10 @@ package path.container;
 import java.io.*;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import path.communication.*;
+import path.converter.ConCom;
 
 public class ROT implements Comparable<ROT> {
 	static public int maxsize=1000;
@@ -139,6 +142,21 @@ public class ROT implements Comparable<ROT> {
                 remdis=(status[26]<< 8)&0x0000ff00|
        		(status[27]<< 0)&0x000000ff;
 
+                missionstatus=(status[10]<< 0)&0x10;
+                if (missionstatus!=0){
+                System.out.print("fatal error in communication");
+                System.out.print(missionstatus);
+                System.out.println();
+                System.out.flush();
+                    try {
+                        this.write(ConCom.resetmission(),0);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                
 		//System.out.print("The current location is:");
 		//System.out.print(rx);
 		//System.out.print(" ");
@@ -150,15 +168,7 @@ public class ROT implements Comparable<ROT> {
 		//System.out.println();
                 return true;
                 }else{if (s.length==13){
-                missionstatus=(status[9]<< 0)&0x000000ff;
-                if (missionstatus!=0){
-                System.out.print("fatal error in communication");
-                System.out.print(missionstatus);
-                System.out.println();
-                System.out.flush();
-                //return false;
-                //System.exit(0);
-                }
+                
                 return true;
                 }else{System.out.println("not a command");return false;}}
                 //return false;
@@ -187,7 +197,11 @@ public class ROT implements Comparable<ROT> {
             dbot.rd=rd;
             dbot.rx=rx;
             dbot.ry=ry;
-            dbot.xx=xx;}
+            dbot.xx=xx;
+            if ((this.missionpod!=null)&&((ostate==1)||(xx>0)))
+            dbot.podid=(((19-this.missionpod.xposition)*100)+this.missionpod.yposition);
+            else dbot.podid=0;
+            }
         }
         
 	public ROT(int id){
@@ -265,6 +279,13 @@ public class ROT implements Comparable<ROT> {
             }while(!getStatus(ret));
             //Amap.fbMap[0][desx][desy]=ID;
         }
+        public void resetall() throws IOException, InterruptedException{
+            byte[] ret;
+            do
+            {ret=coms.write(ConCom.reset(),0);
+            }while(!getStatus(ret));
+            //Amap.fbMap[0][desx][desy]=ID;
+        }
 
     @Override
     public int compareTo(ROT o) {
@@ -304,11 +325,11 @@ public class ROT implements Comparable<ROT> {
         task.add(tt);
         }
         if (this.operatingstages==4){
-        tt=new Task(0,8,0);
+        tt=new Task(0,3,0);
         task.add(tt);
         }
         if (this.operatingstages==5){
-        tt=new Task(7,8,0);
+        tt=new Task(6,3,0);
         task.add(tt);
         }
         if (this.operatingstages==6){

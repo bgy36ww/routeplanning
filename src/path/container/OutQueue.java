@@ -21,42 +21,42 @@ public class OutQueue {
         
         location[0]=new OutQueueLocation();
         location[0].x=0;
-        location[0].y=7;
+        location[0].y=5;
         
         location[1]=new OutQueueLocation();
         location[1].x=1;
-        location[1].y=6;
+        location[1].y=5;
         
         location[2]=new OutQueueLocation();
         location[2].x=2;
-        location[2].y=6;
+        location[2].y=5;
         
         location[3]=new OutQueueLocation();
         location[3].x=3;
-        location[3].y=6;
+        location[3].y=5;
         
         location[4]=new OutQueueLocation();
         location[4].x=4;
-        location[4].y=6;
+        location[4].y=5;
         
         location[5]=new OutQueueLocation();
         location[5].x=4;
-        location[5].y=5;
+        location[5].y=6;
         
         location[6]=new OutQueueLocation();
         location[6].x=4;
-        location[6].y=4;
+        location[6].y=7;
         
         location[7]=new OutQueueLocation();
         location[7].x=4;
-        location[7].y=3;
+        location[7].y=8;
         
         location[8]=new OutQueueLocation();
-        location[8].x=4;
-        location[8].y=2;
+        location[8].x=5;
+        location[8].y=9;
         
         location[9]=new OutQueueLocation();
-        location[9].x=4;
-        location[9].y=1;
+        location[9].x=6;
+        location[9].y=9;
     }
 }

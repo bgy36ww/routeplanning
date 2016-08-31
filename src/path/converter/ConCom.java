@@ -171,6 +171,26 @@ ret[ii]=toSommand(ii+1,12,01,1,0,0,180);ii++;
 		second[10]=fid[1];
 		return second;
 	}
+        public static byte[] reset(){
+		byte[] fid=new byte[4];
+		byte[] second=new byte[]{(byte)0xFC,0x0C,0x00,0x01,0x00,0x00,0x04,0x00,0x00,0x00,0x00,(byte)0x5A};
+		byte[] cdata=Arrays.copyOfRange(second,0,8);
+		CRC16 crc=new CRC16();
+		fid=crc.process(cdata);
+		second[9]=fid[0];
+		second[10]=fid[1];
+		return second;
+	}
+        public static byte[] resetmission(){
+		byte[] fid=new byte[4];
+		byte[] second=new byte[]{(byte)0xFC,0x0C,0x00,0x01,0x00,0x00,0x06,0x00,0x00,0x00,0x00,(byte)0x5A};
+		byte[] cdata=Arrays.copyOfRange(second,0,8);
+		CRC16 crc=new CRC16();
+		fid=crc.process(cdata);
+		second[9]=fid[0];
+		second[10]=fid[1];
+		return second;
+	}
 
 
 
