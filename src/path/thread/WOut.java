@@ -39,8 +39,17 @@ public class WOut implements Runnable{
                 Thread.sleep(100);
                 //Thread.yield();
                 //System.out.println("Yeah, I am printing");
+                //for (int i=0)
+                
                 dis.write(-900);
+                for (ROT rr:Amap.idlebotset)
+                {
+                rr.getpos();
+                rr.setDBot();
+                }
+                
                 synchronized(Amap.obot){
+                    dis.write(Amap.obot.size());
                 for (DBot r:Amap.obot){
                     
                     dis.write(-800);

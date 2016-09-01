@@ -308,6 +308,7 @@ public class Algorithm{
 		{
 			//colision check
 			if (ffMap[t][i][j]==0) return false;
+                        if ((bot.operatingstages<=3)&&(ffMap[t][i][j]==3)) return false;
 			if ((bot.state==1)&&(fpMap[t][i][j]!=0)) return false;	
 			if ((fpMap[t][i][j]==0)&&((fbMap[t][i][j]==0)||(fbMap[t][i][j]==bot.ID))) return true;			
 			if ((bot.state==0)&&((fbMap[t][i][j]==0)||(fbMap[t][i][j]==bot.ID))) return true;

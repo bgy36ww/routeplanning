@@ -86,6 +86,10 @@ public class WServer implements Runnable{
         MissionGetter mg=new MissionGetter(Amap.missionholder,dbc);
         this.threadPool.execute(mg);
         
+        
+        this.threadPool.execute(new WDis());
+        
+        
         System.out.println("Connection get");
                     System.out.flush();
         openServerSocket();

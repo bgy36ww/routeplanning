@@ -12,6 +12,8 @@ public class ROT implements Comparable<ROT> {
 	public int locationX;
 	public int locationY;
         
+        public int ind=2;
+        
         public boolean calculated;
         public boolean operating;
        
@@ -73,11 +75,15 @@ public class ROT implements Comparable<ROT> {
         public int desy;
         public int desd;
         
+        public int rstate;
+        
+        private int errorcode;
+        
         
         public int taskhold;
         public Queue<Task> task;
 
-        public int missionstatus;
+        public int missionstatus=0;
 
 	public int[][][] mfdMap;
 	public int[][][] mfbMap;  
@@ -135,7 +141,10 @@ public class ROT implements Comparable<ROT> {
        		(status[20]<< 0)&0x000000ff;
                 
                 
-                
+                locationX=(rx+200)/1000;
+                locationY=(ry+200)/1000;
+                direction=(rd+45)/90*90;
+                direction=toD(direction);
 
 		rem=(status[25]<< 0)&0x000000ff;
                 
@@ -143,19 +152,17 @@ public class ROT implements Comparable<ROT> {
        		(status[27]<< 0)&0x000000ff;
 
                 missionstatus=(status[10]<< 0)&0x10;
-                if (missionstatus!=0){
-                System.out.print("fatal error in communication");
-                System.out.print(missionstatus);
-                System.out.println();
-                System.out.flush();
-                    try {
-                        this.write(ConCom.resetmission(),0);
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    }
+                
+                
+                if ((status[9]&0x03)>0){
+                System.out.printf("\n\n\n\n\n***************Error in Robot #%d when checking status with error code ******** %d\n\n\n\n", ID,status[9]);
+                
+                
                 }
+                
+                rstate=(status[9]<<5)&03;
+                
+                
                 
 		//System.out.print("The current location is:");
 		//System.out.print(rx);
@@ -168,7 +175,13 @@ public class ROT implements Comparable<ROT> {
 		//System.out.println();
                 return true;
                 }else{if (s.length==13){
+                errorcode=status[9];
+                if (errorcode>0){
+                System.out.printf("\n\n\n\n\n***************Error in Robot #%d when setting mission with error code ******** %d\n\n\n\n", ID,errorcode);
+                ind++;
                 
+                }
+                    
                 return true;
                 }else{System.out.println("not a command");return false;}}
                 //return false;
@@ -264,6 +277,27 @@ public class ROT implements Comparable<ROT> {
             }while(!getStatus(ret));
             }while(rem>10);
             
+           if (missionstatus!=0){
+                System.out.print("fatal error in communication");
+                System.out.print(missionstatus);
+                System.out.println();
+                System.out.flush();
+                    try {
+                        this.write(ConCom.resetmission(),0);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+           
+           do{
+            do
+            {
+                
+                ret=coms.write(check,t);
+            }while(!getStatus(ret));
+            }while(rem>10);
             
             do
             {
@@ -278,11 +312,24 @@ public class ROT implements Comparable<ROT> {
             {ret=coms.write(check,0);
             }while(!getStatus(ret));
             //Amap.fbMap[0][desx][desy]=ID;
+            locationX=(rx+200)/1000;
+            locationY=(ry+200)/1000;
+            direction=(rd+45)/90*90;
+            direction=toD(direction);
         }
         public void resetall() throws IOException, InterruptedException{
             byte[] ret;
             do
             {ret=coms.write(ConCom.reset(),0);
+            }while(!getStatus(ret));
+            do
+            {ret=coms.write(ConCom.resetmission(),0);
+            }while(!getStatus(ret));
+            do
+            {
+                byte[] lower;
+                lower=ConCom.toSommand(1,ID,1,4,(rx+200)/1000,(ry+200)/1000,0);
+                ret=coms.write(lower,0);
             }while(!getStatus(ret));
             //Amap.fbMap[0][desx][desy]=ID;
         }
@@ -325,12 +372,10 @@ public class ROT implements Comparable<ROT> {
         task.add(tt);
         }
         if (this.operatingstages==4){
-        tt=new Task(0,3,0);
-        task.add(tt);
+        this.operatingstages=6;
         }
         if (this.operatingstages==5){
-        tt=new Task(6,3,0);
-        task.add(tt);
+        this.operatingstages=6;
         }
         if (this.operatingstages==6){
         tt=new Task(missionpod.xposition,missionpod.yposition,2);

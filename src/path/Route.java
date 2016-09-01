@@ -56,15 +56,17 @@ public class Route{
                 
                 //rearrange(Amap.bot);
                 
-                for (ROT rr:Amap.bot){
-                    Amap.fbMap[0][rr.locationX][rr.locationY]=rr.ID;
-                    Amap.fbMap[1][rr.locationX][rr.locationY]=rr.ID;
-                    Amap.fbMap[2][rr.locationX][rr.locationY]=rr.ID;
-                }
+                
                 
                 
                 retry=false;
                 Amap.reset();
+                for (ROT rr:Amap.bot){
+                    Amap.fbMap[0][rr.locationX][rr.locationY]=rr.ID;
+                    Amap.fbMap[1][rr.locationX][rr.locationY]=rr.ID;
+                    Amap.fbMap[2][rr.locationX][rr.locationY]=rr.ID;
+                    rr.toMission();
+                }
                 al.ffMap=Amap.ffMap;
             //for (int t=0;t<10;t++)
             //al.printFDMap2(t);
@@ -122,7 +124,7 @@ public class Route{
                     Amap.bot[0]=kt;
                     //Amap.runningbotset.remove(kt);
                     
-                    down=2;
+                    down=1;
                     
                     break;
                     

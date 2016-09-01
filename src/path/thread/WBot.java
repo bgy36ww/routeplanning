@@ -63,10 +63,10 @@ public class WBot implements Runnable{
     public void run() {
         //bot.orders=concom.toOrder(bot);
         //byte[][] data=concom.manualorder();
-        
+        int indd;
         //bot.ini(out, concom.checkStatus());
         int wtime=0;
-        int ind=1;
+        //int ind=2;
         
         System.out.printf("\nBot %d is running\n", bot.ID);
         
@@ -120,47 +120,59 @@ public class WBot implements Runnable{
                             System.out.printf("Also my tasks is %d %d\n",bot.task.element().desx,bot.task.element().desy);
                         }
                         boolean bf=false;
-                        if ((lo!=bot.dorder)||(lx!=mdesx)||(ly!=mdesy)||(ld!=mdesd)){
-                        bot.mission=ConCom.toSommand(ind++,bot.ID ,1 ,bot.dorder, mdesx,mdesy ,bot.toAngle(mdesd));
-                        bf=true;
-                        }
+                        //if ((lo!=bot.dorder)||(lx!=mdesx)||(ly!=mdesy)||(ld!=mdesd)){
+                        indd=bot.ind+1;
+                        bot.mission=ConCom.toSommand(bot.ind++,bot.ID ,1 ,bot.dorder, mdesx,mdesy ,bot.toAngle(mdesd));
+                        //bf=true;
+                        //}
                         lo=bot.dorder;
                         lx=mdesx;
                         ly=mdesy;
                         ld=mdesd;
-                        if (bf){
+                        //if (bf){
+                        
                         synchronized (bot){
                             bot.write(bot.mission, wtime);
                             System.out.println("I am sending my tasks");
                             bot.getpos();
-                        }}
+                        //}
+                        if (indd!=bot.ind){
+                        bot.mission=ConCom.toSommand(++bot.ind,bot.ID ,1 ,bot.dorder, mdesx,mdesy ,bot.toAngle(mdesd));
+                        bot.write(bot.mission, wtime);
+                            System.out.println("I am sending my tasks again");
+                            bot.getpos();
+                        }
+                        }
                         int safty=0;
                         //while ((int)bot.rem!=0){
-                        while (safty<5){
+                        while (safty<8){
                         safty++;
                             bot.setDBot();
                             Thread.sleep(100);
                             bot.getpos();
                         }
                         bot.xx=0;
-                        if (bot.dorder==2){
+                        //wont run here
+                        if ((bot.dorder==2)&&(bot.rstate==1)){
                             bot.ostate=1;
                             bot.xx=1;
                             bot.opod=Amap.tpMap[mdesx][mdesy];
                             Amap.tpMap[mdesx][mdesy]=0;
                             System.out.println("I am changing the state");
                         }
-                        if (bot.dorder==3){
+                        if ((bot.dorder==3)&&(bot.rstate==0)){
                             bot.xx=2;
                             bot.ostate=0;
                             Amap.tpMap[mdesx][mdesy]=bot.opod;
                             bot.opod=0;
                             System.out.println("I am changing the state");
                         }
-                        bot.locationX=(bot.rx+500)/1000;
-                        bot.locationY=(bot.ry+500)/1000;
-                        bot.direction=(bot.rd+45)/90*90;
+                        synchronized (bot){
+                        bot.locationX=(bot.rx+200)/1000;
+                        bot.locationY=(bot.ry+200)/1000;
+                        bot.direction=(bot.rd+20)/90*90;
                         bot.direction=bot.toD(bot.direction);
+                        }
                         System.out.printf("\nthe turns left for %d is %d\n",bot.ID,bot.turns);
                         System.out.printf("\ntasks left for %d is %d\n",bot.ID,bot.task.size());
                         System.out.printf("\nI amd %d ing\n",bot.task.element().order); 
@@ -210,10 +222,10 @@ public class WBot implements Runnable{
                             
                         }
                 }
-                if ((bot.operatingstages==4)&&(bot.locationX==0)&&(bot.locationY==3)){
-                    bot.operatingstages++;}
-                if ((bot.operatingstages==5)&&(bot.locationX==6)&&(bot.locationY==3)){
-                    bot.operatingstages++;}
+                //if ((bot.operatingstages==4)&&(bot.locationX==0)&&(bot.locationY==3)){
+                //    bot.operatingstages++;}
+                //if ((bot.operatingstages==5)&&(bot.locationX==6)&&(bot.locationY==3)){
+                //    bot.operatingstages++;}
                 
             }
             
