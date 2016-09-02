@@ -56,6 +56,7 @@ public class ComServer {
 	}
 	
         catch(IOException ee){
+            System.out.printf("\n\n\n****ERROR The %s IP address machine has lost connection ******\n\n\n",socket.getInetAddress());
             retry=true;
         }
 	
