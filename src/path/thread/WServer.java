@@ -124,6 +124,7 @@ public class WServer implements Runnable{
                 rr.ini(coms,concom.checkStatus());
                 jumpf=true;
                 System.out.println("Got the old machine");
+                System.out.printf("\n\nThe machine IP address is %s\n\n",rr.getIP());
                 //System.exit(0);
             }
             }

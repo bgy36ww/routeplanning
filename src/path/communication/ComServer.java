@@ -46,12 +46,13 @@ public class ComServer {
         
         retry=false;
         try{
-        DataOutputStream out=new DataOutputStream(socket.getOutputStream());
-        out.write(data);
+            synchronized(socket){
+            DataOutputStream out=new DataOutputStream(socket.getOutputStream());
+            out.write(data);}
         
         
             ret=get();	
-            TimeUnit.MILLISECONDS.sleep(t);
+            Thread.sleep(5);
 	}
 	
         catch(IOException ee){
@@ -72,53 +73,78 @@ public class ComServer {
 	}
 
 	public byte[] get() throws IOException{
-	ArrayList<Byte> list=new ArrayList<Byte>();
-	int n=0;
-	byte bt=input.readByte();
-	list.add(bt);
+            
+            
+            
+            
+            ArrayList<Byte> list=new ArrayList<Byte>();
+            int n=0;
+            byte bt=input.readByte();
+            list.add(bt);
         
-        //debug
-	StringBuilder sb = new StringBuilder();
-	sb.append(String.format("%02X ", bt));
+            //debug
+            StringBuilder sb = new StringBuilder();
+            sb.append(String.format("%02X ", bt));
         
-        //log recording
-//	logwriter.write(sb.toString()+" ");
-	//System.out.println(sb.toString()+" ");
+            //log recording
+            //	logwriter.write(sb.toString()+" ");
+            //System.out.println(sb.toString()+" ");
 	
-        //error checking
-        while ((int)(bt&0xff)-252!=0){
+                //error checking
+            while ((int)(bt&0xff)-252!=0){
         
-	bt=input.readByte();
-	list.add(bt);
-	sb = new StringBuilder();
-	sb.append(String.format("%02X ", bt));
-//	logwriter.write(sb.toString()+" ");
-	//System.out.println(sb.toString()+" ");
-	}
+                bt=input.readByte();
+                list.add(bt);
+                sb = new StringBuilder();
+                sb.append(String.format("%02X ", bt));
+                //	logwriter.write(sb.toString()+" ");
+                //System.out.println(sb.toString()+" ");
+            }
         
         
-	if (((int)(bt&0xff)-252)==0){
-	bt=input.readByte();
-	list.add(bt);
-	n=(int)bt;
-	sb = new StringBuilder();
-	sb.append(String.format("%02X ", bt));
-//	logwriter.write(sb.toString()+" ");
-	//System.out.println(n-2);
-	}
+            if (((int)(bt&0xff)-252)==0){
+                bt=input.readByte();
+                list.add(bt);
+                n=(int)bt;
+                sb = new StringBuilder();
+                sb.append(String.format("%02X ", bt));
+                //	logwriter.write(sb.toString()+" ");
+                //System.out.println(n-2);
+            }
         
-	for (int i=0;i<n-2;i++){
-	bt=input.readByte();
-	list.add(bt);	
-	sb = new StringBuilder();
-	sb.append(String.format("%02X ", bt));
-//	logwriter.write(sb.toString()+" ");
-	//System.out.println(sb.toString()+" ");
-	}
+            for (int i=0;i<n-2;i++){
+                bt=input.readByte();
+                list.add(bt);	
+                sb = new StringBuilder();
+                sb.append(String.format("%02X ", bt));
+                //	logwriter.write(sb.toString()+" ");
+                //System.out.println(sb.toString()+" ");
+            }
         
-	state= toArray(list);
-	return state;
+                state= toArray(list);
+            return state;
 	}	
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
 	private byte[] toArray(ArrayList<Byte> inarray) {
 	byte[] ret = new byte[inarray.size()];
