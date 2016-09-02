@@ -123,6 +123,8 @@ public class WServer implements Runnable{
                 ComServer coms=new ComServer(clientSocket);
                 rr.ini(coms,concom.checkStatus());
                 jumpf=true;
+                System.out.println("Got the old machine");
+                //System.exit(0);
             }
             }
             if (jumpf){continue;}
@@ -145,6 +147,7 @@ public class WServer implements Runnable{
                 new WBot(r,new DBConnection()));
             synchronized( Amap.idlebotset){
             Amap.idlebotset.add(r);}
+            Amap.botset.add(r);
             r.idle=true;
             ind++;
         }

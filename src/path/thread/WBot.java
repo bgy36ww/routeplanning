@@ -183,18 +183,20 @@ public class WBot implements Runnable{
                         System.out.printf("\nI amd %d ing\n",bot.task.element().order); 
                         System.out.printf("\nThe tasks is going to %d %d \n ",bot.task.element().desx,bot.task.element().desy); 
                         //System.exit(0);
-                        if ((bot.turns<=1)&&(bot.task.element().desx==bot.locationX)&&(bot.task.element().desy==bot.locationY)&&(bot.task.element().order!=2)){
+                        if ((bot.turns<=1)&&(bot.task.element().desx==bot.locationX)&&(bot.task.element().desy==bot.locationY)&&(bot.task.element().order!=2)&&(bot.operatingstages!=6)){
                             bot.task.remove();
                         }
                     
                         if (bot.operatingstages==6){
                         if ((bot.locationX==bot.missionpod.xposition)&&(bot.locationY==bot.missionpod.yposition)){
                             
-                            if(bot.ostate==0){
-                            while ((int)bot.rem!=0){
-                            bot.setDBot();
-                            Thread.sleep(100);
-                            bot.getpos();}
+                            
+                            if((bot.ostate==0)&&(bot.rstate==0)){
+                            //while ((int)bot.rem!=0){
+                            //bot.setDBot();
+                            //Thread.sleep(100);
+                            //bot.getpos();}
+                            bot.task.remove();
                             break;
                             }
                             
