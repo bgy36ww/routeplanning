@@ -24,7 +24,7 @@ import java.util.Iterator;
  */
 public class ComServer {
 	private ServerSocket listener;
-	private Socket socket;
+	public Socket socket;
 	private DataInputStream input;
 	private LogWriter logwriter;
 	private int id;

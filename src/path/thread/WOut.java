@@ -42,11 +42,12 @@ public class WOut implements Runnable{
                 //for (int i=0)
                 
                 dis.write(-900);
+                synchronized(Amap.idlebotset){
                 for (ROT rr:Amap.idlebotset)
                 {
                 rr.getpos();
                 rr.setDBot();
-                }
+                }}
                 
                 synchronized(Amap.obot){
                     dis.write(Amap.obot.size());

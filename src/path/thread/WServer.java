@@ -10,6 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -93,6 +94,9 @@ public class WServer implements Runnable{
         System.out.println("Connection get");
                     System.out.flush();
         openServerSocket();
+        
+        Amap.botset=new HashSet<>();
+        
         while(! isStopped()){
             
             
@@ -110,7 +114,19 @@ public class WServer implements Runnable{
             }
             System.out.printf("Got the %d machine", ind+1);
             
+            boolean jumpf=false;
 
+            for (ROT rr:Amap.botset){
+            if (clientSocket.getInetAddress().equals(rr.getIP()))
+            {
+                ConCom concom=new ConCom();
+                ComServer coms=new ComServer(clientSocket);
+                rr.ini(coms,concom.checkStatus());
+                jumpf=true;
+            }
+            }
+            if (jumpf){continue;}
+            
             //create a new robot
             //wait until all robot is connected
             ROT r=connectBOT(clientSocket,ind+1);
@@ -127,7 +143,8 @@ public class WServer implements Runnable{
             Amap.obot.add(r.dbot);}
             this.threadPool.execute(
                 new WBot(r,new DBConnection()));
-            Amap.idlebotset.add(r);
+            synchronized( Amap.idlebotset){
+            Amap.idlebotset.add(r);}
             r.idle=true;
             ind++;
         }

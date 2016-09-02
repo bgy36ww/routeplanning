@@ -1,5 +1,7 @@
 package path.container;
 import java.io.*;
+import static java.lang.Math.abs;
+import java.net.InetAddress;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.logging.Level;
@@ -70,10 +72,18 @@ public class ROT implements Comparable<ROT> {
 	public int rem;
         public int remdis;
         private ComServer coms;
+        public CommitedMission commited;
+        
+        private int lax;
+        private int lay;
+        private int lad;
+        private int lac=0;
         
         public int desx;
         public int desy;
         public int desd;
+        
+        
         
         public int rstate;
         
@@ -110,6 +120,9 @@ public class ROT implements Comparable<ROT> {
         return 0;
         }
         
+        public InetAddress getIP(){
+            return coms.socket.getInetAddress();
+        }
         
 	public boolean getStatus(byte[] s){
 		status=s;
@@ -198,6 +211,24 @@ public class ROT implements Comparable<ROT> {
         locationY=y;
         }
         
+        public void checkstall(){
+            if ((abs(rx-lax)<100)&&(abs(ry-lay)<100)&&(abs(rd-lad)<10)&&(task.element().desx!=locationX)&&(task.element().desy!=locationY)){
+                lac++;
+            }else lac=0;
+            if (lac>10){
+                try {
+                        this.write(ConCom.resetmission(),0);
+                        Thread.sleep(100);
+                        lac=0;
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+            }
+           
+            
+        }
         
 	/* class constructor
 	Create every robot with it's starting map*/
@@ -277,7 +308,7 @@ public class ROT implements Comparable<ROT> {
             }while(!getStatus(ret));
             }while(rem>10);
             
-           if (missionstatus!=0){
+           /*if (missionstatus!=0){
                 System.out.print("fatal error in communication");
                 System.out.print(missionstatus);
                 System.out.println();
@@ -289,7 +320,7 @@ public class ROT implements Comparable<ROT> {
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     }
-                }
+                }*/
            
            do{
             do
@@ -316,15 +347,24 @@ public class ROT implements Comparable<ROT> {
             locationY=(ry+200)/1000;
             direction=(rd+45)/90*90;
             direction=toD(direction);
+            
+            checkstall();
+            
         }
         public void resetall() throws IOException, InterruptedException{
             byte[] ret;
             do
-            {ret=coms.write(ConCom.reset(),0);
-            }while(!getStatus(ret));
-            do
             {ret=coms.write(ConCom.resetmission(),0);
             }while(!getStatus(ret));
+            
+            
+            do
+            {ret=coms.write(ConCom.reset(),0);
+            }while(!getStatus(ret));
+            
+            
+            
+            
             do
             {
                 byte[] lower;
@@ -336,8 +376,8 @@ public class ROT implements Comparable<ROT> {
 
     @Override
     public int compareTo(ROT o) {
-        int compareunit=o.getdis();
-        return this.getdis()-compareunit;
+        int compareunit=o.getdisdiff(0,5);
+        return this.getdisdiff(0,5)-compareunit;
     }
 
     public int getdis(){
@@ -372,10 +412,14 @@ public class ROT implements Comparable<ROT> {
         task.add(tt);
         }
         if (this.operatingstages==4){
-        this.operatingstages=6;
+            tt=new Task(0,4,0);
+            task.add(tt);
+        //this.operatingstages++;
         }
         if (this.operatingstages==5){
-        this.operatingstages=6;
+            tt=new Task(0,3,0);
+            task.add(tt);
+        //this.operatingstages++;
         }
         if (this.operatingstages==6){
         tt=new Task(missionpod.xposition,missionpod.yposition,2);

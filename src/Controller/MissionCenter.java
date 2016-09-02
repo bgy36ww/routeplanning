@@ -28,7 +28,7 @@ public class MissionCenter {
     public boolean publishMission(){
         synchronized(runningbotset){
         if ((missionholder.isEmpty())||(idlebotset.isEmpty())){
-        return true;
+        return false;
         }
         while ((!missionholder.isEmpty())&&(!idlebotset.isEmpty()))
         {
@@ -55,10 +55,10 @@ public class MissionCenter {
                
                synchronized (runningbotset){
                runningbotset.add(br);}
-               Amap.outqueue.bqueue.add(br);
+               //Amap.outqueue.bqueue.add(br);
                }
         }
-        return false;
+        return true;
         }
     }
 }

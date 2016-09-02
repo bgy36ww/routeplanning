@@ -65,6 +65,40 @@ public class Route{
                     Amap.fbMap[0][rr.locationX][rr.locationY]=rr.ID;
                     Amap.fbMap[1][rr.locationX][rr.locationY]=rr.ID;
                     Amap.fbMap[2][rr.locationX][rr.locationY]=rr.ID;
+                    int ddx=rr.commited.desx;
+                    int ddy=rr.commited.desy;
+                    
+                    Amap.fbMap[0][rr.commited.desx][rr.commited.desy]=rr.ID;
+                    Amap.fbMap[1][rr.commited.desx][rr.commited.desy]=rr.ID;
+                    Amap.fbMap[2][rr.commited.desx][rr.commited.desy]=rr.ID;
+                    
+                    while (ddx>rr.locationX){
+                    Amap.fbMap[0][ddx][ddy]=rr.ID;
+                    Amap.fbMap[1][ddx][ddy]=rr.ID;
+                    Amap.fbMap[2][ddx][ddy]=rr.ID;
+                    ddx--;
+                    }
+                    while (ddy>rr.locationY){
+                    Amap.fbMap[0][ddx][ddy]=rr.ID;
+                    Amap.fbMap[1][ddx][ddy]=rr.ID;
+                    Amap.fbMap[2][ddx][ddy]=rr.ID;
+                    ddy--;
+                    }
+                    while (ddx<rr.locationX){
+                    Amap.fbMap[0][ddx][ddy]=rr.ID;
+                    Amap.fbMap[1][ddx][ddy]=rr.ID;
+                    Amap.fbMap[2][ddx][ddy]=rr.ID;
+                    ddx++;
+                    }
+                    while (ddy<rr.locationY){
+                    Amap.fbMap[0][ddx][ddy]=rr.ID;
+                    Amap.fbMap[1][ddx][ddy]=rr.ID;
+                    Amap.fbMap[2][ddx][ddy]=rr.ID;
+                    ddy++;
+                    }
+                    
+                    
+                    
                     rr.toMission();
                 }
                 al.ffMap=Amap.ffMap;

@@ -8,6 +8,9 @@ package path.thread;
 import Controller.MissionCenter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import path.container.Amap;
+import path.container.ROT;
+import path.container.SortedArrayList;
 
 /**
  *
@@ -28,7 +31,17 @@ public class MissionDispatcher implements Runnable{
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
-        mc.publishMission();
+        if(mc.publishMission()){
+        SortedArrayList<ROT> sqr=new SortedArrayList<ROT>();
+        for(ROT rr:Amap.runningbotset){
+            if (!Amap.outqueue.bqueue.contains(rr)&&(rr.operatingstages<=3)){
+            sqr.insertSorted(rr);}
+        }
+        
+        for(ROT rr:sqr){
+        Amap.outqueue.bqueue.add(rr);
+        }
+        }
         }
     
     }

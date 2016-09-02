@@ -308,6 +308,8 @@ public class Algorithm{
 		{
 			//colision check
 			if (ffMap[t][i][j]==0) return false;
+                        if ((bot.operatingstages==6)&&(ffMap[t][i][j]==5)) return false;
+                        if ((bot.operatingstages>3)&&(ffMap[t][i][j]==4)) return false;
                         if ((bot.operatingstages<=3)&&(ffMap[t][i][j]==3)) return false;
 			if ((bot.state==1)&&(fpMap[t][i][j]!=0)) return false;	
 			if ((fpMap[t][i][j]==0)&&((fbMap[t][i][j]==0)||(fbMap[t][i][j]==bot.ID))) return true;			
@@ -675,7 +677,7 @@ public void recMap2(int sst,int t, int dex,int dey) throws NullPointerException{
         setMark(tt,bot.CoX[tt],bot.CoY[tt],true);}
         //System.out.printf("\nWe are currently at %d and the direction is %d\n", tt,bot.dir[tt]);
 }
-        private void setAllMark(int t,int i,int j,int i2,int j2){
+        public void setAllMark(int t,int i,int j,int i2,int j2){
             int i3=i2;
             int j3=j2;
             

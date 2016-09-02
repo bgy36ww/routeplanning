@@ -15,6 +15,7 @@ import path.communication.ComServer;
 import path.communication.DBConnection;
 import path.communication.disout;
 import path.container.Amap;
+import path.container.CommitedMission;
 import path.container.ROT;
 import path.converter.ConCom;
 
@@ -50,10 +51,13 @@ public class WBot implements Runnable{
         try {
             bot.resetall();
             bot.getpos();
-            bot.locationX=(bot.rx+500)/1000;
-            bot.locationY=(bot.ry+500)/1000;
-            bot.direction=(bot.rd+45)/90*90;
+            bot.locationX=(bot.rx+400)/1000;
+            bot.locationY=(bot.ry+400)/1000;
+            bot.direction=(bot.rd+20)/90*90;
             bot.direction=bot.toD(bot.direction);
+            bot.commited=new CommitedMission(bot.locationX,bot.locationY,bot.direction);
+            
+            
         } catch (IOException | InterruptedException ex) {
             ex.printStackTrace();
         }
@@ -123,6 +127,7 @@ public class WBot implements Runnable{
                         //if ((lo!=bot.dorder)||(lx!=mdesx)||(ly!=mdesy)||(ld!=mdesd)){
                         indd=bot.ind+1;
                         bot.mission=ConCom.toSommand(bot.ind++,bot.ID ,1 ,bot.dorder, mdesx,mdesy ,bot.toAngle(mdesd));
+                        bot.commited=new CommitedMission(mdesx,mdesy,mdesd);
                         //bf=true;
                         //}
                         lo=bot.dorder;
@@ -145,7 +150,7 @@ public class WBot implements Runnable{
                         }
                         int safty=0;
                         //while ((int)bot.rem!=0){
-                        while (safty<8){
+                        while (safty<9){
                         safty++;
                             bot.setDBot();
                             Thread.sleep(100);
@@ -153,14 +158,14 @@ public class WBot implements Runnable{
                         }
                         bot.xx=0;
                         //wont run here
-                        if ((bot.dorder==2)&&(bot.rstate==1)){
+                        if ((bot.dorder==2)){
                             bot.ostate=1;
                             bot.xx=1;
                             bot.opod=Amap.tpMap[mdesx][mdesy];
                             Amap.tpMap[mdesx][mdesy]=0;
                             System.out.println("I am changing the state");
                         }
-                        if ((bot.dorder==3)&&(bot.rstate==0)){
+                        if ((bot.dorder==3)){
                             bot.xx=2;
                             bot.ostate=0;
                             Amap.tpMap[mdesx][mdesy]=bot.opod;
@@ -168,9 +173,9 @@ public class WBot implements Runnable{
                             System.out.println("I am changing the state");
                         }
                         synchronized (bot){
-                        bot.locationX=(bot.rx+200)/1000;
-                        bot.locationY=(bot.ry+200)/1000;
-                        bot.direction=(bot.rd+20)/90*90;
+                        bot.locationX=(bot.rx+400)/1000;
+                        bot.locationY=(bot.ry+400)/1000;
+                        bot.direction=(bot.rd+5)/90*90;
                         bot.direction=bot.toD(bot.direction);
                         }
                         System.out.printf("\nthe turns left for %d is %d\n",bot.ID,bot.turns);
@@ -218,23 +223,26 @@ public class WBot implements Runnable{
                 if (bot.operatingstages==6){
                         if ((bot.locationX==bot.missionpod.xposition)&&(bot.locationY==bot.missionpod.yposition)){
                             bot.operatingstages++;
-                            db.reportback(bot.missionpod.missionC);
+                            
                             
                         }
                 }
-                //if ((bot.operatingstages==4)&&(bot.locationX==0)&&(bot.locationY==3)){
-                //    bot.operatingstages++;}
-                //if ((bot.operatingstages==5)&&(bot.locationX==6)&&(bot.locationY==3)){
-                //    bot.operatingstages++;}
+                if ((bot.operatingstages==4)&&(bot.locationX==0)&&(bot.locationY==4)){
+                    bot.operatingstages++;}
+                if ((bot.operatingstages==5)&&(bot.locationX==0)&&(bot.locationY==3)){
+                    bot.operatingstages++;}
                 
             }
-            
+                
                 synchronized(Amap.get()){
                 Amap.iMap[bot.locationX][bot.locationY]=0;
-                Amap.runningbotset.remove(bot);
+                Amap.runningbotset.remove(bot);}
+                synchronized(Amap.idlebotset){
                 Amap.idlebotset.add(bot);
+                
                 bot.idle=true;
                 WServer.finished();
+                db.reportback(bot.missionpod.missionC);
                 }
         
         }
