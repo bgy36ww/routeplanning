@@ -116,20 +116,27 @@ public class WServer implements Runnable{
             
             boolean jumpf=false;
 
-            for (ROT rr:Amap.botset){
+            /*for (ROT rr:Amap.botset){
             if (clientSocket.getInetAddress().equals(rr.getIP()))
             {
                 ConCom concom=new ConCom();
                 ComServer coms=new ComServer(clientSocket);
                 rr.ini(coms,concom.checkStatus());
                 jumpf=true;
+                try {
+                    rr.getpos();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
                 System.out.println("Got the old machine");
                 System.out.printf("\n\nThe machine IP address is %s\n\n",rr.getIP());
                 //System.exit(0);
             }
             }
             if (jumpf){continue;}
-            
+            */
             //create a new robot
             //wait until all robot is connected
             ROT r=connectBOT(clientSocket,ind+1);

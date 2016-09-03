@@ -41,42 +41,42 @@ public class newunittest {
                 r2.locationY=5;
                 r1.task=InputOrder.readTask(0);
                 r2.task=InputOrder.readTask(1);
-                Route.refresh();
+                //Route.refresh();
                 r1.locationX=r1.desx;
                 r1.locationY=r1.desy;
                 r1.direction=r1.desd;
                 r2.locationX=r2.desx;
                 r2.locationY=r2.desy;
                 r2.direction=r2.desd;
-                Route.refresh();
+                //Route.refresh();
                 r1.locationX=r1.desx;
                 r1.locationY=r1.desy;
                 r1.direction=r1.desd;
                 r2.locationX=r2.desx;
                 r2.locationY=r2.desy;
                 r2.direction=r2.desd;
-                Route.refresh();
+                //Route.refresh();
                 r1.locationX=r1.desx;
                 r1.locationY=r1.desy;
                 r1.direction=r1.desd;
                 r2.locationX=r2.desx;
                 r2.locationY=r2.desy;
                 r2.direction=r2.desd;
-                Route.refresh();
+                //Route.refresh();
                 r1.locationX=r1.desx;
                 r1.locationY=r1.desy;
                 r1.direction=r1.desd;
                 r2.locationX=r2.desx;
                 r2.locationY=r2.desy;
                 r2.direction=r2.desd;
-                Route.refresh();
+               // Route.refresh();
                 r1.locationX=r1.desx;
                 r1.locationY=r1.desy;
                 r1.direction=r1.desd;
                 r2.locationX=r2.desx;
                 r2.locationY=r2.desy;
                 r2.direction=r2.desd;
-                Route.refresh();
+               //Route.refresh();
                 r1.task.remove();
                 r2.task.remove();
                 r1.locationX=r1.desx;
@@ -85,7 +85,7 @@ public class newunittest {
                 r2.locationX=r2.desx;
                 r2.locationY=r2.desy;
                 r2.direction=r2.desd;
-                Route.refresh();
+                //Route.refresh();
        
        }
 

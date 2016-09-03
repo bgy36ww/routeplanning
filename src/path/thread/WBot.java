@@ -73,12 +73,12 @@ public class WBot implements Runnable{
         //int ind=2;
         
         System.out.printf("\nBot %d is running\n", bot.ID);
-        
+        bot.xx=0;
         while (bot.operating)
         {
         //need to request a mission from mission center
         //instead of rolling through quests
-            bot.ready=false;
+
             while (bot.idle){
                 try {
                     Thread.sleep(100);
@@ -102,14 +102,26 @@ public class WBot implements Runnable{
                         Logger.getLogger(WBot.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+                
+                
                 System.out.println("Mission Start");
                 while(!bot.task.isEmpty()){
                     try{
                         bot.toMission();
                         bot.ready=true;
-                        while (!bot.calculated){
-                            Thread.sleep(100);
+                        
+                        synchronized(Route.get()){
+                            Route.refresh(bot);
                         }
+                        
+                        
+                        //while (!bot.calculated){
+                        //    Thread.sleep(100);
+                        //}
+                        
+                        
+                        
+                        
                         bot.ready=false;
                         System.out.println("Mission Calculated");
                     
@@ -156,22 +168,8 @@ public class WBot implements Runnable{
                             Thread.sleep(100);
                             bot.getpos();
                         }
-                        bot.xx=0;
+                        
                         //wont run here
-                        if ((bot.dorder==2)){
-                            bot.ostate=1;
-                            bot.xx=1;
-                            bot.opod=Amap.tpMap[mdesx][mdesy];
-                            Amap.tpMap[mdesx][mdesy]=0;
-                            System.out.println("I am changing the state");
-                        }
-                        if ((bot.dorder==3)){
-                            bot.xx=2;
-                            bot.ostate=0;
-                            Amap.tpMap[mdesx][mdesy]=bot.opod;
-                            bot.opod=0;
-                            System.out.println("I am changing the state");
-                        }
                         synchronized (bot){
                         bot.locationX=(bot.rx+400)/1000;
                         bot.locationY=(bot.ry+400)/1000;
@@ -183,19 +181,24 @@ public class WBot implements Runnable{
                         System.out.printf("\nI amd %d ing\n",bot.task.element().order); 
                         System.out.printf("\nThe tasks is going to %d %d \n ",bot.task.element().desx,bot.task.element().desy); 
                         //System.exit(0);
-                        if ((bot.turns<=1)&&(bot.task.element().desx==bot.locationX)&&(bot.task.element().desy==bot.locationY)&&(bot.task.element().order!=2)&&(bot.operatingstages!=6)){
+                        
+                        if ((bot.dorder==2)&&(bot.rstate==1)){
+                            bot.task.remove();
+                        }
+                        
+                        if ((bot.dorder==3)&&(bot.rstate==0)){
+                            bot.task.remove();
+                        }
+                        
+                        if ((!bot.task.isEmpty())&&(bot.turns<=1)&&(bot.task.element().desx==bot.locationX)&&(bot.task.element().desy==bot.locationY)&&(bot.task.element().order==0)&&(bot.operatingstages!=6)){
                             bot.task.remove();
                         }
                     
                         if (bot.operatingstages==6){
                         if ((bot.locationX==bot.missionpod.xposition)&&(bot.locationY==bot.missionpod.yposition)){
-                            
-                            
+
+                            //
                             if((bot.ostate==0)&&(bot.rstate==0)){
-                            //while ((int)bot.rem!=0){
-                            //bot.setDBot();
-                            //Thread.sleep(100);
-                            //bot.getpos();}
                             bot.task.remove();
                             break;
                             }
@@ -204,35 +207,17 @@ public class WBot implements Runnable{
                         }
                         
                         WServer.finished();
-                        while (WServer.finishe!=0){Thread.sleep(10);
-                        }
+                        //while (WServer.finishe!=0){Thread.sleep(10);
+                        //}
                     }catch( IOException | InterruptedException e){
                         e.printStackTrace();
                     }
                 }
                 
                 System.out.println("All tasks done");
-                //Amap.outqueue.bqueue.remove(bot);
+                
                 WServer.teldead();
-                if (bot.operatingstages<3){
-                bot.operatingstages++;
-                }
-                if (bot.operatingstages==3){
-                    if ((bot==Amap.outqueue.bqueue.peek())&&(Amap.picking==0)&&(bot.locationX==Amap.outqueue.location[0].x)&&(bot.locationY==Amap.outqueue.location[0].y)){
-                        Amap.picking=1;
-                    }
-                }
-                if (bot.operatingstages==6){
-                        if ((bot.locationX==bot.missionpod.xposition)&&(bot.locationY==bot.missionpod.yposition)){
-                            bot.operatingstages++;
-                            
-                            
-                        }
-                }
-                if ((bot.operatingstages==4)&&(bot.locationX==0)&&(bot.locationY==4)){
-                    bot.operatingstages++;}
-                if ((bot.operatingstages==5)&&(bot.locationX==0)&&(bot.locationY==3)){
-                    bot.operatingstages++;}
+                proceed();
                 
             }
                 
@@ -253,5 +238,54 @@ public class WBot implements Runnable{
         System.out.printf("I am bot %d and I just ended my tasks",bot.ID);
         System.out.println(threadName+" has ended");
        // System.exit(0);
+    }
+    
+    public void proceed(){
+                if (bot.operatingstages==1){
+                    bot.ostate=1;
+                    bot.xx=1;
+                    bot.opod=Amap.tpMap[mdesx][mdesy];
+                    Amap.tpMap[mdesx][mdesy]=0;
+                    bot.setDBot();
+                    System.out.println("I am changing the state");
+                    bot.operatingstages++;
+                }
+        
+        
+        
+                
+                if (bot.operatingstages==3){
+                    if ((bot==Amap.outqueue.bqueue.peek())&&(Amap.picking==0)&&(bot.locationX==Amap.outqueue.location[0].x)&&(bot.locationY==Amap.outqueue.location[0].y)){
+                        Amap.picking=1;
+                        
+                        //System.exit(0);
+                    }
+                }
+                if (bot.operatingstages<3){
+                    bot.operatingstages++;
+                }
+                
+                if (bot.operatingstages==6){
+                        
+                    
+                        if ((bot.locationX==bot.missionpod.xposition)&&(bot.locationY==bot.missionpod.yposition)){
+                            bot.ostate=0;
+                            bot.xx=3;
+                            Amap.tpMap[mdesx][mdesy]=bot.opod;
+                            bot.opod=0;
+                            bot.setDBot();
+                            
+                            System.out.println("I am changing the state down");
+                            bot.operatingstages++;
+                            
+                            
+                        }
+                }
+                if ((bot.operatingstages==4)&&(bot.locationX==0)&&(bot.locationY==4)){
+                    bot.operatingstages++;}
+                if ((bot.operatingstages==5)&&(bot.locationX==0)&&(bot.locationY==3)){
+                    bot.operatingstages++;}
+    
+    
     }
 }

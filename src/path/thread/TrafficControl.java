@@ -35,10 +35,9 @@ public class TrafficControl implements Runnable{
     @Override
     public void run() {
         System.out.println("Traffic Control started");
+        /*
         while (true){
             try{
-                
-                
                 Thread.sleep(100);
 
                 while (Amap.runningbotset.isEmpty()){Thread.sleep(100);}
@@ -56,8 +55,7 @@ public class TrafficControl implements Runnable{
                     System.out.printf("the size after algorithm is %d\n",this.runningbotset.size());
                     for (ROT rr:this.runningbotset){
                         System.out.printf("\nSetting %d robot free with %d takss\n", rr.ID,rr.task.size());
-                        rr.calculated=true;
-                        
+                        rr.calculated=true; 
                     }
                 }
                     while (finishe<size){  
@@ -68,6 +66,9 @@ public class TrafficControl implements Runnable{
             
             if (alive==0){System.out.print("Sleeping");}
         }
+
+        */
+        System.out.println("Traffic Terminated");
     }
     
 }

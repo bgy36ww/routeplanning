@@ -397,7 +397,7 @@ public class Algorithm{
                 }
             
             if (di+dj==0){return false;}
-            while ((checkMap(t,i,j,i+di,j+dj,dd,0))&&(count<2)){
+            while ((checkMap(t,i,j,i+di,j+dj,dd,0))&&(count<3)){
                 //System.out.printf("\ntruning%d %d\n",i+di,j+dj);
                 if ((i+di==dssx)&&(j+dj==dssy)){return true;}
                 

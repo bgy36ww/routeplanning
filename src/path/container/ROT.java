@@ -173,7 +173,8 @@ public class ROT implements Comparable<ROT> {
                 
                 }
                 
-                rstate=(status[9]<<5)&03;
+                //determine the state of the POD；
+                rstate=(status[9]>>5)&03;
                 
                 
                 
@@ -393,11 +394,8 @@ public class ROT implements Comparable<ROT> {
     public void toMission(){
         Task tt;
         task=new LinkedList<>();
+        
         if (this.operatingstages==1){
-        //Amap.outqueue.bqueue.add(this);
-        this.operatingstages=2;
-        }
-        if (this.operatingstages==2){
         tt=new Task(missionpod.xposition,missionpod.yposition,1);
         task.add(tt);
         }
@@ -408,7 +406,7 @@ public class ROT implements Comparable<ROT> {
         if (((LinkedList)(Amap.outqueue.bqueue)).get(i)==this){
             ii=i;
         }}
-        tt=new Task(Amap.outqueue.location[ii].x,Amap.outqueue.location[ii].y,3);
+        tt=new Task(Amap.outqueue.location[ii].x,Amap.outqueue.location[ii].y,0);
         task.add(tt);
         }
         if (this.operatingstages==4){

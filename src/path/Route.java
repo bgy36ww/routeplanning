@@ -22,9 +22,10 @@ public class Route{
 	static public void ini(){
 
 	}
-        private Route instance=null;
+        static private Route instance=null;
         private Route(){}
-        public synchronized Route get (){
+        
+        static public synchronized Route get (){
         if (instance==null)
         instance=new Route();
             return instance;
@@ -39,7 +40,7 @@ public class Route{
         
         
         
-        static public synchronized void refresh(){
+        static public synchronized void refresh(ROT bot){
             
            // System.out.println(Amap.fpMap[4][18][4
            boolean retry=true;
@@ -53,57 +54,50 @@ public class Route{
             }}else{down--;}
             
             while (retry){
-                
                 //rearrange(Amap.bot);
-                
-                
-                
-                
                 retry=false;
                 Amap.reset();
                 for (ROT rr:Amap.bot){
-                    Amap.fbMap[0][rr.locationX][rr.locationY]=rr.ID;
-                    Amap.fbMap[1][rr.locationX][rr.locationY]=rr.ID;
-                    Amap.fbMap[2][rr.locationX][rr.locationY]=rr.ID;
-                    int ddx=rr.commited.desx;
-                    int ddy=rr.commited.desy;
+                    synchronized(rr){
+                        
+                        Amap.fbMap[0][rr.locationX][rr.locationY]=rr.ID;
+                        Amap.fbMap[1][rr.locationX][rr.locationY]=rr.ID;
+                        Amap.fbMap[2][rr.locationX][rr.locationY]=rr.ID;
+                        int ddx=rr.commited.desx;
+                        int ddy=rr.commited.desy;
                     
-                    Amap.fbMap[0][rr.commited.desx][rr.commited.desy]=rr.ID;
-                    Amap.fbMap[1][rr.commited.desx][rr.commited.desy]=rr.ID;
-                    Amap.fbMap[2][rr.commited.desx][rr.commited.desy]=rr.ID;
+                        Amap.fbMap[0][rr.commited.desx][rr.commited.desy]=rr.ID;
+                        Amap.fbMap[1][rr.commited.desx][rr.commited.desy]=rr.ID;
+                        Amap.fbMap[2][rr.commited.desx][rr.commited.desy]=rr.ID;
                     
-                    while (ddx>rr.locationX){
-                    Amap.fbMap[0][ddx][ddy]=rr.ID;
-                    Amap.fbMap[1][ddx][ddy]=rr.ID;
-                    Amap.fbMap[2][ddx][ddy]=rr.ID;
-                    ddx--;
-                    }
-                    while (ddy>rr.locationY){
-                    Amap.fbMap[0][ddx][ddy]=rr.ID;
-                    Amap.fbMap[1][ddx][ddy]=rr.ID;
-                    Amap.fbMap[2][ddx][ddy]=rr.ID;
-                    ddy--;
-                    }
-                    while (ddx<rr.locationX){
-                    Amap.fbMap[0][ddx][ddy]=rr.ID;
-                    Amap.fbMap[1][ddx][ddy]=rr.ID;
-                    Amap.fbMap[2][ddx][ddy]=rr.ID;
-                    ddx++;
-                    }
-                    while (ddy<rr.locationY){
-                    Amap.fbMap[0][ddx][ddy]=rr.ID;
-                    Amap.fbMap[1][ddx][ddy]=rr.ID;
-                    Amap.fbMap[2][ddx][ddy]=rr.ID;
-                    ddy++;
-                    }
-                    
-                    
-                    
-                    rr.toMission();
+                        while (ddx>rr.locationX){
+                            Amap.fbMap[0][ddx][ddy]=rr.ID;
+                            Amap.fbMap[1][ddx][ddy]=rr.ID;
+                            Amap.fbMap[2][ddx][ddy]=rr.ID;
+                            ddx--;
+                        }
+                        while (ddy>rr.locationY){
+                            Amap.fbMap[0][ddx][ddy]=rr.ID;
+                            Amap.fbMap[1][ddx][ddy]=rr.ID;
+                            Amap.fbMap[2][ddx][ddy]=rr.ID;
+                            ddy--;
+                        }
+                        while (ddx<rr.locationX){
+                            Amap.fbMap[0][ddx][ddy]=rr.ID;
+                            Amap.fbMap[1][ddx][ddy]=rr.ID;
+                            Amap.fbMap[2][ddx][ddy]=rr.ID;
+                            ddx++;
+                        }
+                        while (ddy<rr.locationY){
+                            Amap.fbMap[0][ddx][ddy]=rr.ID;
+                            Amap.fbMap[1][ddx][ddy]=rr.ID;
+                            Amap.fbMap[2][ddx][ddy]=rr.ID;
+                            ddy++;
+                        }
+                }
+                    //rr.toMission();
                 }
                 al.ffMap=Amap.ffMap;
-            //for (int t=0;t<10;t++)
-            //al.printFDMap2(t);
             
                 System.out.printf("\nWe have %d robots here\n",Amap.bot.length);
                 System.out.flush();
@@ -140,7 +134,7 @@ public class Route{
                         break;
                     }
                     retry=true; 
-                    System.out.println("OH BOY!!!!!!");
+                    System.out.println("Error!!!!!!");
                     System.out.printf("The %d robot is down", rr.ID);
                     
                     for (int i=0;i<30;i++){
@@ -181,6 +175,9 @@ public class Route{
                 rr.desd=rr.dir[0];
                 rr.dorder=0;
                 //ind++;
+                }
+                if (rr.equals(bot)){
+                return;
                 }
                 
             }
