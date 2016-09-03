@@ -492,6 +492,7 @@ public class Algorithm{
                 dssy=dsy;
 		
 		startt=stt;
+                if (std==0){std=1;}
 		fdMap[stt][stx][sty]=std;
 		fbMap[stt][stx][sty]=bot.ID;
 		//bot.coor[stt].first=stx; bot.coor[stt].second=sty;

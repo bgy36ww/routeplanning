@@ -116,7 +116,7 @@ public class WServer implements Runnable{
             
             boolean jumpf=false;
 
-            /*for (ROT rr:Amap.botset){
+            for (ROT rr:Amap.botset){
             if (clientSocket.getInetAddress().equals(rr.getIP()))
             {
                 ConCom concom=new ConCom();
@@ -136,7 +136,7 @@ public class WServer implements Runnable{
             }
             }
             if (jumpf){continue;}
-            */
+            
             //create a new robot
             //wait until all robot is connected
             ROT r=connectBOT(clientSocket,ind+1);

@@ -49,14 +49,16 @@ public class MissionCenter {
                br.operatingstages=1;
                
                
-               
                //br.toMission();
                synchronized (idlebotset){
                idlebotset.remove(br);}
                
                synchronized (runningbotset){
                runningbotset.add(br);}
+               
+               synchronized (br){
                br.idle=false;
+               }
                //Amap.outqueue.bqueue.add(br);
                }
         }

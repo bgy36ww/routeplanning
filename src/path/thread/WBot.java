@@ -182,12 +182,21 @@ public class WBot implements Runnable{
                         System.out.printf("\nThe tasks is going to %d %d \n ",bot.task.element().desx,bot.task.element().desy); 
                         //System.exit(0);
                         
-                        if ((bot.dorder==2)&&(bot.rstate==1)){
-                            bot.task.remove();
+                        if ((bot.dorder==2)){
+                            while (!bot.task.isEmpty()){
+                            while (bot.rem!=0){Thread.sleep(100);}
+                            bot.task.remove();}
+                            
+                            System.out.println("Entered next phase");
+                            
+                            System.exit(0);
+                            
                         }
                         
-                        if ((bot.dorder==3)&&(bot.rstate==0)){
-                            bot.task.remove();
+                        if ((bot.dorder==3)){
+                            while (!bot.task.isEmpty()){
+                            while (bot.rem!=0){Thread.sleep(100);}
+                            bot.task.remove();}
                         }
                         
                         if ((!bot.task.isEmpty())&&(bot.turns<=1)&&(bot.task.element().desx==bot.locationX)&&(bot.task.element().desy==bot.locationY)&&(bot.task.element().order==0)&&(bot.operatingstages!=6)){
@@ -197,8 +206,9 @@ public class WBot implements Runnable{
                         if (bot.operatingstages==6){
                         if ((bot.locationX==bot.missionpod.xposition)&&(bot.locationY==bot.missionpod.yposition)){
 
-                            //
-                            if((bot.ostate==0)&&(bot.rstate==0)){
+                            //&&(bot.rstate==0)
+                            if((bot.ostate==0)){
+                                while (bot.rem!=0){Thread.sleep(100);}
                             bot.task.remove();
                             break;
                             }
@@ -241,6 +251,11 @@ public class WBot implements Runnable{
     }
     
     public void proceed(){
+                System.out.println("Entering next phase");
+                System.out.println(bot.operatingstages);
+                System.exit(0);
+        
+        
                 if (bot.operatingstages==1){
                     bot.ostate=1;
                     bot.xx=1;
