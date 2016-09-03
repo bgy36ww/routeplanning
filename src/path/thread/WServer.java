@@ -38,7 +38,7 @@ public class WServer implements Runnable{
     protected boolean      isStopped    = false;
     protected Thread       runningThread= null;
     protected ExecutorService threadPool =
-        Executors.newFixedThreadPool(20);
+        Executors.newFixedThreadPool(70);
     
     //protected int robotnumber=2;
     public boolean ready=false;
@@ -151,6 +151,9 @@ public class WServer implements Runnable{
             r.setDBot();
             synchronized(Amap.obot){
             Amap.obot.add(r.dbot);}
+            
+            this.threadPool.execute(new BOTfinder(r));
+            
             this.threadPool.execute(
                 new WBot(r,new DBConnection()));
             synchronized( Amap.idlebotset){
