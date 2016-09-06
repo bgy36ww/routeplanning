@@ -48,7 +48,11 @@ public class TrafficControl implements Runnable{
                     for (ROT rr:this.runningbotset){
                         rr.idle=false;
                         //rr.ready=false;
-                        while (!rr.ready){Thread.sleep(100);}
+                        int count=0;
+                        while (!rr.ready){Thread.sleep(100);
+                        count++;
+                        if (count>80)break;
+                        }
                     }
                     System.out.println("algorithm reset");
                     System.out.printf("the size before algorithm is %d\n",this.runningbotset.size());
@@ -60,8 +64,11 @@ public class TrafficControl implements Runnable{
                         
                     }
                 }
+                int count=0;
                     while (finishe<size){  
-                        Thread.sleep(100);   
+                        Thread.sleep(100);
+                        count++;
+                        if (count>80)break;
                     }}catch(Exception e){e.printStackTrace();}
             System.out.println("reset finished");
             finishe=0;

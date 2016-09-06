@@ -173,8 +173,8 @@ public class WBot implements Runnable{
                             System.out.println("I am changing the state");
                         }
                         synchronized (bot){
-                        bot.locationX=(bot.rx+200)/1000;
-                        bot.locationY=(bot.ry+200)/1000;
+                        bot.locationX=(bot.rx+50)/1000;
+                        bot.locationY=(bot.ry+50)/1000;
                         bot.direction=(bot.rd+5)/90*90;
                         bot.direction=bot.toD(bot.direction);
                         }
